@@ -1,6 +1,7 @@
 package com.example.popularmovies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
@@ -9,10 +10,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.popularmovies.Utils.JsonUtils;
 import com.example.popularmovies.Utils.NetworkUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mErrorMessageDisplay;
 
     private ProgressBar mLoadingIndicator;
+
+    private static final int GRID_SPAN = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +38,12 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, GRID_SPAN);
+        mRecyclerView.setLayoutManager(layoutManager);
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, String[]>{
+    public class FetchMovieTask extends AsyncTask<String, Void, List<String>>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -42,19 +51,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String[] doInBackground(String... strings) {
+        protected List<String> doInBackground(String... strings) {
 
             String search = strings[0];
             URL fetchMovieUrl = NetworkUtils.buildMovieUrl(search);
-            String response = "";
+            String response;
+            List<String> imagePaths;
             try {
                 response = NetworkUtils.getResponseFromUrl(fetchMovieUrl);
+                imagePaths = JsonUtils.getImagePath(response);
+                return imagePaths;
             } catch (IOException e) {
                 e.printStackTrace();
                 cancel(true);
+                return null;
+
             }
 
-            return new String[0];
+
         }
 
         @Override
