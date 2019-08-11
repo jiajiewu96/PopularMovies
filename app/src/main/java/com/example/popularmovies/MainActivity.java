@@ -3,9 +3,15 @@ package com.example.popularmovies;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.example.popularmovies.Utils.NetworkUtils;
+
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,5 +31,22 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+    }
+
+    public class FetchMovieTask extends AsyncTask<String, Void, String[]>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String[] doInBackground(String... strings) {
+
+            String search = strings[0];
+            URL fetchMovieUrl = NetworkUtils.buildMovieUrl(search);
+
+            return new String[0];
+        }
     }
 }
