@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.popularmovies.Utils.Consts;
@@ -21,9 +24,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler{
-    //public key that can be accessed from multiple activities
+public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler, AdapterView.OnItemSelectedListener {
 
+    private Spinner mSpinner;
 
     private MoviePosterAdapter mMoviePosterAdapter;
 
@@ -33,12 +36,16 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     private ProgressBar mLoadingIndicator;
 
+    private static String mSortString;
+
     private static final int GRID_SPAN = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSpinner = (Spinner) findViewById(R.id.sort_spinner);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_posters);
 
@@ -52,14 +59,21 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mMoviePosterAdapter = new MoviePosterAdapter(this, this);
         mRecyclerView.setAdapter(mMoviePosterAdapter);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.sort_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(this);
+        //default sort param
+        mSortString = Consts.POPULAR_PARAM;
+
         loadMovieData();
     }
 
     private void loadMovieData() {
         showMoviePosters();
-
-
-        new FetchMovieTask().execute();
+        new FetchMovieTask().execute(mSortString);
     }
 
     private void showMoviePosters() {
@@ -78,6 +92,31 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         intent.putExtra(Consts.VOTE_AVERAGE_EXTRA_KEY, voteAverage);
         intent.putExtra(Consts.OVERVIEW_EXTRA_KEY, overview);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        int itemPos = adapterView.getSelectedItemPosition();
+        switch (itemPos){
+            case 0:
+                mSortString = Consts.POPULAR_PARAM;
+                loadMovieData();
+                break;
+            case 1:
+                mSortString = Consts.TOP_RATED_PARAM;
+                loadMovieData();
+                break;
+            default:
+                mSortString = Consts.POPULAR_PARAM;
+                loadMovieData();
+                break;
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{
