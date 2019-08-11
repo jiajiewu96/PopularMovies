@@ -36,7 +36,10 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
     @Override
     public void onBindViewHolder(@NonNull MoviePosterViewHolder holder, int position) {
         String posterPath = NetworkUtils.buildImageUrlString(posterPaths.get(position));
-        Picasso.get().load(posterPath).into(holder.posterImageView);
+        Picasso.get().load(posterPath)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .into(holder.posterImageView);
     }
 
     @Override
