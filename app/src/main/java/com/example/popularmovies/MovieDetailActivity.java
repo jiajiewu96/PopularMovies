@@ -1,5 +1,6 @@
 package com.example.popularmovies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
     }
 
-    private String setDate(String unformattedString) {
+    private String setDate(@NonNull String unformattedString) {
         String releaseDate = "";
 
         try {

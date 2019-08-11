@@ -18,6 +18,7 @@
             android:layout_height="230dp"
             android:adjustViewBounds="false"
             android:cropToPadding="false"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/poster" />
     </androidx.cardview.widget.CardView>
 </FrameLayout>

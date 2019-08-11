@@ -21,7 +21,6 @@ import com.example.popularmovies.model.Movie;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler, AdapterView.OnItemSelectedListener {
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{
+    class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

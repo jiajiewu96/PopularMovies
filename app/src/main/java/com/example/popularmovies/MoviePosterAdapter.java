@@ -22,7 +22,6 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
     private static final String TAG = MoviePosterAdapter.class.getSimpleName();
 
     private List<Movie> mMovies;
-    private Context mContext;
     private final MoviePosterClickerHandler mClickerHandler;
 
     public interface MoviePosterClickerHandler{
@@ -34,10 +33,9 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         notifyDataSetChanged();
     }
 
-    public MoviePosterAdapter(Context context, MoviePosterClickerHandler clickerHandler){
+    public MoviePosterAdapter(MoviePosterClickerHandler clickerHandler){
         mClickerHandler = clickerHandler;
         mMovies = new ArrayList<>();
-        mContext = context;
     }
 
     @NonNull
@@ -73,7 +71,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
 
     class MoviePosterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView posterImageView;
-        public MoviePosterViewHolder(@NonNull View itemView) {
+        MoviePosterViewHolder(@NonNull View itemView) {
             super(itemView);
             posterImageView = itemView.findViewById(R.id.movie_poster);
             itemView.setOnClickListener(this);

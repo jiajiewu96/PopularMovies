@@ -7,6 +7,7 @@
     <string name="rating_label">Rating:</string>
     <string name="overview_label">Overview:</string>
     <string name="sort_by">Sort By:</string>
+    <string name="poster">Poster</string>
     <string-array name="sort_array">
         <item>Popular</item>
         <item>Top Rated</item>
