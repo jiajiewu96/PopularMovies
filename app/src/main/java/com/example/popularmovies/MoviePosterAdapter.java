@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.popularmovies.Utils.NetworkUtils;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.MoviePosterViewHolder> {
@@ -32,7 +35,8 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MoviePosterViewHolder holder, int position) {
-
+        String posterPath = NetworkUtils.buildImageUrlString(posterPaths.get(position));
+        Picasso.get().load(posterPath).into(holder.posterImageView);
     }
 
     @Override
