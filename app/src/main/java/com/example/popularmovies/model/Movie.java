@@ -1,11 +1,11 @@
-package com.example.popularmovies;
+package com.example.popularmovies.model;
 
 public class Movie {
     private String title;
     private String releaseDate;
     private String posterPath;
     private int voteAverage;
-    private String plotSynopsys;
+    private String plotSynopses;
 
     public Movie() {
 
@@ -16,7 +16,7 @@ public class Movie {
         this.releaseDate = releaseDate;
         this.posterPath = posterPath;
         this.voteAverage = voteAverage;
-        this.plotSynopsys = plotSynopsys;
+        this.plotSynopses = plotSynopsys;
     }
 
     public String getTitle() {
@@ -35,7 +35,7 @@ public class Movie {
         return voteAverage;
     }
 
-    public String getPlotSynopsys() {
-        return plotSynopsys;
+    public String getPlotSynopses() {
+        return plotSynopses;
     }
 }

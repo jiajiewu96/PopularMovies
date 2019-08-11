@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.popularmovies.Utils.JsonUtils;
 import com.example.popularmovies.Utils.NetworkUtils;
+import com.example.popularmovies.model.Movie;
 
 import java.io.IOException;
 import java.net.URL;

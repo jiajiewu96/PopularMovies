@@ -2,7 +2,7 @@ package com.example.popularmovies.Utils;
 
 import android.text.TextUtils;
 
-import com.example.popularmovies.Movie;
+import com.example.popularmovies.model.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
