@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
             String search = strings[0];
             URL fetchMovieUrl = NetworkUtils.buildMovieUrl(search);
+            String response = "";
             try {
-                String Response = NetworkUtils.getResponseFromUrl(fetchMovieUrl);
+                response = NetworkUtils.getResponseFromUrl(fetchMovieUrl);
             } catch (IOException e) {
                 e.printStackTrace();
                 cancel(true);
