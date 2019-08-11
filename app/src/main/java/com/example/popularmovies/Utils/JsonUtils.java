@@ -21,6 +21,9 @@ public class JsonUtils {
     private static final String JSON_KEY_VOTE_AVERAGE = "vote_average";
     private static final String JSON_KEY_OVERVIEW = "overview";
 
+    private static final String FALL_BACK_STRING = "N/A";
+
+    private static final int FALL_BACK_INT = 0;
 
     public static List<Movie> getMovies(String json){
         if(TextUtils.isEmpty(json)){
@@ -32,11 +35,11 @@ public class JsonUtils {
             List<Movie> movies = new ArrayList<>();
             for(int i =0; i< results.length(); i++){
                 JSONObject currentMovie = results.getJSONObject(i);
-                String title = currentMovie.getString(JSON_KEY_TITLE);
-                String date = currentMovie.getString(JSON_KEY_RELEASE_DATE);
-                int rating = currentMovie.getInt(JSON_KEY_VOTE_AVERAGE);
-                String posterPath = currentMovie.getString(JSON_KEY_POSTER);
-                String overview = currentMovie.getString(JSON_KEY_OVERVIEW);
+                String title = currentMovie.optString(JSON_KEY_TITLE, FALL_BACK_STRING);
+                String date = currentMovie.optString(JSON_KEY_RELEASE_DATE, FALL_BACK_STRING);
+                int rating = currentMovie.optInt(JSON_KEY_VOTE_AVERAGE, FALL_BACK_INT);
+                String posterPath = currentMovie.optString(JSON_KEY_POSTER, FALL_BACK_STRING);
+                String overview = currentMovie.optString(JSON_KEY_OVERVIEW, FALL_BACK_STRING);
 
                 movies.add(new Movie(title, date, posterPath, rating, overview));
             }
