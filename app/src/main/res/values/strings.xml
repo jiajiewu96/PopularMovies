@@ -2,4 +2,8 @@
     <string name="app_name">PopularMovies</string>
     <string name="default_error_message">An error has occurred</string>
     <string name="io_error">There was a problem connecting to the internet, please check if you have connection</string>
+    <string name="title_label">Title:</string>
+    <string name="release_date_label">Release Date:</string>
+    <string name="rating_label">Rating:</string>
+    <string name="overview_label">Overview:</string>
 </resources>
