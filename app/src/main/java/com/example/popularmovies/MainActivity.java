@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         GridLayoutManager layoutManager = new GridLayoutManager(this, GRID_SPAN);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mMoviePosterAdapter = new MoviePosterAdapter(this, this);
+        mMoviePosterAdapter = new MoviePosterAdapter(this);
         mRecyclerView.setAdapter(mMoviePosterAdapter);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
