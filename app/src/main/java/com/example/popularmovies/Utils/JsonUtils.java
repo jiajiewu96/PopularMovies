@@ -38,7 +38,7 @@ public class JsonUtils {
                 String title = currentMovie.optString(JSON_KEY_TITLE, FALL_BACK_STRING);
                 String date = currentMovie.optString(JSON_KEY_RELEASE_DATE, FALL_BACK_STRING);
                 int rating = currentMovie.optInt(JSON_KEY_VOTE_AVERAGE, FALL_BACK_INT);
-                String posterPath = currentMovie.optString(JSON_KEY_POSTER, FALL_BACK_STRING);
+                String posterPath = NetworkUtils.buildImageUrlString(currentMovie.optString(JSON_KEY_POSTER, FALL_BACK_STRING));
                 String overview = currentMovie.optString(JSON_KEY_OVERVIEW, FALL_BACK_STRING);
 
                 movies.add(new Movie(title, date, posterPath, rating, overview));

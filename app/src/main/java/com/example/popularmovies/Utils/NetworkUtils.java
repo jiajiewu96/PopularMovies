@@ -1,25 +1,32 @@
 package com.example.popularmovies.Utils;
 
 import android.net.Uri;
-import android.widget.ProgressBar;
+import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
+import java.nio.charset.Charset;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String BASE_MOVIE_URL =
-            "http://api.themoviedb.org/3/movie/";
+            "https://api.themoviedb.org/3/movie/";
 
     private static final String BASE_IMAGE_URL =
-            "http://image.tmdb.org/t/p/";
+            "https://image.tmdb.org/t/p/";
 
-    private static final String IMAGE_SIZE = "w185/";
+    private static final String IMAGE_SIZE = "w185";
+    private static final int READ_TIMEOUT = 10000;
+    private static final int CONNECTION_TIMEOUT = 15000;
+    private static final String REQUEST_METHOD = "GET";
 
     private static String POPULAR_PARAM = "popular";
     private static String TOP_RATED_PARAM = "top_rated";
@@ -43,20 +50,49 @@ public class NetworkUtils {
                 imagePath;
     }
     public static String getResponseFromUrl (URL url) throws IOException{
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try {
-            InputStream in = urlConnection.getInputStream();
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-
-            boolean hasInput = scanner.hasNext();
-            if(hasInput){
-                return scanner.next();
-            }else {
-                return null;
-            }
-        }finally {
-            urlConnection.disconnect();
+        String jsonResponse = null;
+        if(url==null){
+            return jsonResponse;
         }
+        HttpsURLConnection urlConnection = null;
+        InputStream in = null;
+        try {
+            urlConnection = (HttpsURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(READ_TIMEOUT);
+            urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+            urlConnection.setRequestMethod(REQUEST_METHOD);
+            urlConnection.connect();
+            Log.d(TAG, "URL RESPONSE CODE: " + urlConnection.getResponseCode());
+            if(urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                in = urlConnection.getInputStream();
+                jsonResponse = readFromStream(in);
+
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            Log.d(TAG, "Unable to connect" + e.toString());
+        }
+        finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (in != null) {
+                in.close();
+            }
+        }
+        return jsonResponse;
+    }
+    private static String readFromStream(InputStream inputStream) throws IOException {
+        StringBuilder output = new StringBuilder();
+        if (inputStream != null) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            String line = reader.readLine();
+            while (line != null) {
+                output.append(line);
+                line = reader.readLine();
+            }
+        }
+        return output.toString();
     }
 }

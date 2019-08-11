@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, GRID_SPAN);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mMoviePosterAdapter = new MoviePosterAdapter();
+        mMoviePosterAdapter = new MoviePosterAdapter(this);
         mRecyclerView.setAdapter(mMoviePosterAdapter);
 
         loadMovieData();
@@ -95,11 +95,7 @@ public class MainActivity extends AppCompatActivity {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(movies != null){
                 showMoviePosters();
-                List<String> posterUrl = new ArrayList<>();
-                for(Movie m : movies){
-                    posterUrl.add(NetworkUtils.buildImageUrlString(m.getPosterPath()));
-                }
-                mMoviePosterAdapter.setMoviePosterStrings(posterUrl);
+                mMoviePosterAdapter.setMoviePosterStrings(movies);
             }
         }
 
