@@ -28,30 +28,30 @@ public class NetworkUtils {
     private static final int CONNECTION_TIMEOUT = 15000;
     private static final String REQUEST_METHOD = "GET";
 
-    private static String POPULAR_PARAM = "popular";
-    private static String TOP_RATED_PARAM = "top_rated";
     private static String API_KEY_PARAM = "api_key";
 
-    public static URL buildMovieUrl(String sortParam){
+    public static URL buildMovieUrl(String sortParam) {
         Uri builtUri = Uri.parse(BASE_MOVIE_URL).buildUpon()
-                .appendPath(POPULAR_PARAM)
+                .appendPath(sortParam)
                 .appendQueryParameter(API_KEY_PARAM, Consts.API_KEY)
                 .build();
         URL url = null;
-        try{
+        try {
             url = new URL(builtUri.toString());
-        }catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         return url;
     }
-    public static String buildImageUrlString(String imagePath){
+
+    static String buildImageUrlString(String imagePath) {
         return BASE_IMAGE_URL + IMAGE_SIZE +
                 imagePath;
     }
-    public static String getResponseFromUrl (URL url) throws IOException{
+
+    public static String getResponseFromUrl(URL url) throws IOException {
         String jsonResponse = null;
-        if(url==null){
+        if (url == null) {
             return jsonResponse;
         }
         HttpsURLConnection urlConnection = null;
@@ -63,16 +63,15 @@ public class NetworkUtils {
             urlConnection.setRequestMethod(REQUEST_METHOD);
             urlConnection.connect();
             Log.d(TAG, "URL RESPONSE CODE: " + urlConnection.getResponseCode());
-            if(urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 in = urlConnection.getInputStream();
                 jsonResponse = readFromStream(in);
 
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, "Unable to connect" + e.toString());
-        }
-        finally {
+        } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
@@ -82,6 +81,7 @@ public class NetworkUtils {
         }
         return jsonResponse;
     }
+
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {

@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         showMoviePosters();
 
 
-        new FetchMovieTask().execute("popular");
+        new FetchMovieTask().execute();
     }
 
     private void showMoviePosters() {
