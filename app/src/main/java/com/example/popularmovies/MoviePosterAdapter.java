@@ -1,5 +1,6 @@
 package com.example.popularmovies;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,7 +26,8 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
     @NonNull
     @Override
     public MoviePosterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_poster_item, parent, false);
+        return new MoviePosterViewHolder(view);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
 
     @Override
     public int getItemCount() {
-        return 0;
+        return posterPaths.size();
     }
 
     class MoviePosterViewHolder extends RecyclerView.ViewHolder{
