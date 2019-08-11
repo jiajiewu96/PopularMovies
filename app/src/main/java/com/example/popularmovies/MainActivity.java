@@ -16,6 +16,7 @@ import com.example.popularmovies.model.Movie;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +47,22 @@ public class MainActivity extends AppCompatActivity {
 
         mMoviePosterAdapter = new MoviePosterAdapter();
         mRecyclerView.setAdapter(mMoviePosterAdapter);
+
+        loadMovieData();
+    }
+
+    private void loadMovieData() {
+        showMoviePosters();
+
+
+        new FetchMovieTask().execute("popular");
+    }
+
+    private void showMoviePosters() {
+        /* First, make sure the error is invisible */
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        /* Then, make sure the weather data is visible */
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{
@@ -70,7 +87,19 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 cancel(true);
                 return null;
+            }
+        }
 
+        @Override
+        protected void onPostExecute(List<Movie> movies) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            if(movies != null){
+                showMoviePosters();
+                List<String> posterUrl = new ArrayList<>();
+                for(Movie m : movies){
+                    posterUrl.add(NetworkUtils.buildImageUrlString(m.getPosterPath()));
+                }
+                mMoviePosterAdapter.setMoviePosterStrings(posterUrl);
             }
         }
 
