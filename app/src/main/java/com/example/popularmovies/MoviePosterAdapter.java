@@ -52,7 +52,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         String posterPath = mMovies.get(position).getPosterPath();
         Picasso.get().load(posterPath)
                 .placeholder(R.drawable.placeholder)
-                .error(R.mipmap.ic_launcher)
+                .error(R.drawable.placeholder)
                 .into(holder.posterImageView, new Callback() {
                     @Override
                     public void onSuccess() {

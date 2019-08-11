@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.popularmovies.Utils.Consts;
 import com.example.popularmovies.Utils.JsonUtils;
 import com.example.popularmovies.Utils.NetworkUtils;
 import com.example.popularmovies.model.Movie;
@@ -22,11 +23,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler{
     //public key that can be accessed from multiple activities
-    public final String TITLE_EXTRA_KEY = "title";
-    public final String RELEASE_DATE_EXTRA_KEY = "release_date";
-    public final String POSTER_PATH_EXTRA_KEY = "poster_path";
-    public final String VOTE_AVERAGE_EXTRA_KEY = "vote_average";
-    public final String OVERVIEW_EXTRA_KEY = "overview";
+
 
     private MoviePosterAdapter mMoviePosterAdapter;
 
@@ -75,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     @Override
     public void onClick(String title, String releaseDate, String posterPath, int voteAverage, String overview) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
-        intent.putExtra(TITLE_EXTRA_KEY, title);
-        intent.putExtra(RELEASE_DATE_EXTRA_KEY, releaseDate);
-        intent.putExtra(POSTER_PATH_EXTRA_KEY, posterPath);
-        intent.putExtra(VOTE_AVERAGE_EXTRA_KEY, voteAverage);
-        intent.putExtra(OVERVIEW_EXTRA_KEY, overview);
+        intent.putExtra(Consts.TITLE_EXTRA_KEY, title);
+        intent.putExtra(Consts.RELEASE_DATE_EXTRA_KEY, releaseDate);
+        intent.putExtra(Consts.POSTER_PATH_EXTRA_KEY, posterPath);
+        intent.putExtra(Consts.VOTE_AVERAGE_EXTRA_KEY, voteAverage);
+        intent.putExtra(Consts.OVERVIEW_EXTRA_KEY, overview);
         startActivity(intent);
     }
 
