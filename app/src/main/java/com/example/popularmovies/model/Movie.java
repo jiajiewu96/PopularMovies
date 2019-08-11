@@ -5,18 +5,18 @@ public class Movie {
     private String releaseDate;
     private String posterPath;
     private int voteAverage;
-    private String plotSynopses;
+    private String overview;
 
     public Movie() {
 
     }
 
-    public Movie(String title, String releaseDate, String posterPath, int voteAverage, String plotSynopses) {
+    public Movie(String title, String releaseDate, String posterPath, int voteAverage, String overview) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.posterPath = posterPath;
         this.voteAverage = voteAverage;
-        this.plotSynopses = plotSynopses;
+        this.overview = overview;
     }
 
     public String getTitle() {
@@ -35,7 +35,7 @@ public class Movie {
         return voteAverage;
     }
 
-    public String getPlotSynopses() {
-        return plotSynopses;
+    public String getOverview() {
+        return overview;
     }
 }

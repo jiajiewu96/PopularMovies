@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler{
+    //public key that can be accessed from multiple activities
+    public final String TITLE_EXTRA_KEY = "title";
+    public final String RELEASE_DATE_EXTRA_KEY = "release_date";
+    public final String POSTER_PATH_EXTRA_KEY = "poster_path";
+    public final String VOTE_AVERAGE_EXTRA_KEY = "vote_average";
+    public final String OVERVIEW_EXTRA_KEY = "overview";
 
     private MoviePosterAdapter mMoviePosterAdapter;
 
@@ -45,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, GRID_SPAN);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mMoviePosterAdapter = new MoviePosterAdapter(this);
+        mMoviePosterAdapter = new MoviePosterAdapter(this, this);
         mRecyclerView.setAdapter(mMoviePosterAdapter);
 
         loadMovieData();
@@ -63,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         /* Then, make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(String title, String releaseDate, String posterPath, int voteAverage, String overview) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra(TITLE_EXTRA_KEY, title);
+        intent.putExtra(RELEASE_DATE_EXTRA_KEY, releaseDate);
+        intent.putExtra(POSTER_PATH_EXTRA_KEY, posterPath);
+        intent.putExtra(VOTE_AVERAGE_EXTRA_KEY, voteAverage);
+        intent.putExtra(OVERVIEW_EXTRA_KEY, overview);
+        startActivity(intent);
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{

@@ -23,13 +23,19 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
 
     private List<Movie> mMovies;
     private Context mContext;
+    private final MoviePosterClickerHandler mClickerHandler;
+
+    public interface MoviePosterClickerHandler{
+        void onClick(String title, String releaseDate, String posterPath, int voteAverage, String plotSynopses);
+    }
 
     public void setMoviePosterStrings(List<Movie> Movies){
         this.mMovies = Movies;
         notifyDataSetChanged();
     }
 
-    public MoviePosterAdapter(Context context){
+    public MoviePosterAdapter(Context context, MoviePosterClickerHandler clickerHandler){
+        mClickerHandler = clickerHandler;
         mMovies = new ArrayList<>();
         mContext = context;
     }
@@ -65,11 +71,23 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         return mMovies.size();
     }
 
-    class MoviePosterViewHolder extends RecyclerView.ViewHolder{
+    class MoviePosterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView posterImageView;
         public MoviePosterViewHolder(@NonNull View itemView) {
             super(itemView);
             posterImageView = itemView.findViewById(R.id.movie_poster);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            String title = mMovies.get(adapterPosition).getTitle();
+            String releaseDate = mMovies.get(adapterPosition).getReleaseDate();
+            String posterPath = mMovies.get(adapterPosition).getPosterPath();
+            int rating = mMovies.get(adapterPosition).getVoteAverage();
+            String overview = mMovies.get(adapterPosition).getOverview();
+            mClickerHandler.onClick(title, releaseDate, posterPath, rating, overview);
         }
     }
 }
