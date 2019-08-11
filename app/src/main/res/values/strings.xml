@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PopularMovies</string>
     <string name="default_error_message">An error has occurred</string>
+    <string name="io_error">There was a problem connecting to the internet, please check if you have connection</string>
 </resources>

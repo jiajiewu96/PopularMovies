@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.popularmovies.Utils.NetworkUtils;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,8 +46,25 @@ public class MainActivity extends AppCompatActivity {
 
             String search = strings[0];
             URL fetchMovieUrl = NetworkUtils.buildMovieUrl(search);
+            try {
+                String Response = NetworkUtils.getResponseFromUrl(fetchMovieUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+                cancel(true);
+            }
 
             return new String[0];
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            closeOnError();
+        }
+    }
+
+    private void closeOnError() {
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
+        mErrorMessageDisplay.setText(R.string.io_error);
     }
 }
