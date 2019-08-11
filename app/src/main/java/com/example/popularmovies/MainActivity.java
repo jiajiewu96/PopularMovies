@@ -20,6 +20,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MoviePosterAdapter mMoviePosterAdapter;
+
     private RecyclerView mRecyclerView;
 
     private TextView mErrorMessageDisplay;
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, GRID_SPAN);
         mRecyclerView.setLayoutManager(layoutManager);
+
+        mMoviePosterAdapter = new MoviePosterAdapter();
+        mRecyclerView.setAdapter(mMoviePosterAdapter);
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{
@@ -56,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
             String search = strings[0];
             URL fetchMovieUrl = NetworkUtils.buildMovieUrl(search);
             String response;
-            List<Movie> imagePaths;
+            List<Movie> movies;
             try {
                 response = NetworkUtils.getResponseFromUrl(fetchMovieUrl);
-                imagePaths = JsonUtils.getMovies(response);
-                return imagePaths;
+                movies = JsonUtils.getMovies(response);
+                return movies;
             } catch (IOException e) {
                 e.printStackTrace();
                 cancel(true);
