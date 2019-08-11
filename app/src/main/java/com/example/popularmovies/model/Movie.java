@@ -11,12 +11,12 @@ public class Movie {
 
     }
 
-    public Movie(String title, String releaseDate, String posterPath, int voteAverage, String plotSynopsys) {
+    public Movie(String title, String releaseDate, String posterPath, int voteAverage, String plotSynopses) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.posterPath = posterPath;
         this.voteAverage = voteAverage;
-        this.plotSynopses = plotSynopsys;
+        this.plotSynopses = plotSynopses;
     }
 
     public String getTitle() {
