@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     private static String mSortString;
 
-    private static final int GRID_SPAN = 2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, GRID_SPAN);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
         mRecyclerView.setLayoutManager(layoutManager);
 
         mMoviePosterAdapter = new MoviePosterAdapter(this);
@@ -68,6 +67,16 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mSortString = Consts.POPULAR_PARAM;
 
         loadMovieData();
+    }
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // You can change this divider to adjust the size of the item
+        int widthDivider = 400;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 2; //to keep the grid aspect
+        return nColumns;
     }
 
     private void loadMovieData() {

@@ -51,17 +51,8 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         Picasso.get().load(posterPath)
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
-                .into(holder.posterImageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        Log.e(TAG, "onError: ", e);
-                    }
-                });
+                .fit()
+                .into(holder.posterImageView);
     }
 
     @Override
