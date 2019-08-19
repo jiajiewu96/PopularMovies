@@ -147,47 +147,6 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     }
 
-//    class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            mLoadingIndicator.setVisibility(View.VISIBLE);
-//        }
-//
-//        @Override
-//        protected List<Movie> doInBackground(String... strings) {
-//
-//            String search = strings[0];
-//            URL fetchMovieUrl = NetworkUtils.buildMovieUrl(search);
-//            String response;
-//            List<Movie> movies;
-//            try {
-//                response = NetworkUtils.getResponseFromUrl(fetchMovieUrl);
-//                movies = JsonUtils.getMovieResponse(response);
-//                return movies;
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                cancel(true);
-//                return null;
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<Movie> movies) {
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
-//            if(movies != null){
-//                showMoviePosters();
-//                mMoviePosterAdapter.setMoviePosterStrings(movies);
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            super.onCancelled();
-//            closeOnError();
-//        }
-//    }
-
     private void closeOnError(String errorMessage) {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
         mErrorMessageDisplay.setText(errorMessage);

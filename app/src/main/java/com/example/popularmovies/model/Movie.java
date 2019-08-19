@@ -3,6 +3,7 @@ package com.example.popularmovies.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.popularmovies.Utils.Consts;
 import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Parcelable {
@@ -12,7 +13,7 @@ public class Movie implements Parcelable {
     private String releaseDate;
 
     @SerializedName("poster_path")
-    private String posterPath;
+    private String rawPosterPath;
 
     @SerializedName("vote_average")
     private double voteAverage;
@@ -26,7 +27,7 @@ public class Movie implements Parcelable {
     public Movie(String title, String releaseDate, String posterPath, int voteAverage, String overview) {
         this.title = title;
         this.releaseDate = releaseDate;
-        this.posterPath = posterPath;
+        this.rawPosterPath = posterPath;
         this.voteAverage = voteAverage;
         this.overview = overview;
     }
@@ -34,7 +35,7 @@ public class Movie implements Parcelable {
     protected Movie(Parcel in) {
         title = in.readString();
         releaseDate = in.readString();
-        posterPath = in.readString();
+        rawPosterPath = in.readString();
         voteAverage = in.readInt();
         overview = in.readString();
     }
@@ -60,7 +61,7 @@ public class Movie implements Parcelable {
     }
 
     public String getPosterPath() {
-        return posterPath;
+        return buildImageUrlString(rawPosterPath);
     }
 
     public double getVoteAverage() {
@@ -80,8 +81,13 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(title);
         parcel.writeString(releaseDate);
-        parcel.writeString(posterPath);
+        parcel.writeString(rawPosterPath);
         parcel.writeDouble(voteAverage);
         parcel.writeString(overview);
+    }
+
+    private static String buildImageUrlString(String imagePath) {
+        return Consts.BASE_IMAGE_URL + Consts.IMAGE_SIZE +
+                imagePath;
     }
 }
