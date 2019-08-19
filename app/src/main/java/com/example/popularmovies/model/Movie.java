@@ -16,7 +16,7 @@ public class Movie implements Parcelable {
     private String rawPosterPath;
 
     @SerializedName("vote_average")
-    private double voteAverage;
+    private float voteAverage;
 
     private String overview;
 
@@ -24,7 +24,7 @@ public class Movie implements Parcelable {
 
     }
 
-    public Movie(String title, String releaseDate, String posterPath, int voteAverage, String overview) {
+    public Movie(String title, String releaseDate, String posterPath, float voteAverage, String overview) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.rawPosterPath = posterPath;
@@ -36,7 +36,7 @@ public class Movie implements Parcelable {
         title = in.readString();
         releaseDate = in.readString();
         rawPosterPath = in.readString();
-        voteAverage = in.readInt();
+        voteAverage = in.readFloat();
         overview = in.readString();
     }
 
@@ -64,7 +64,7 @@ public class Movie implements Parcelable {
         return buildImageUrlString(rawPosterPath);
     }
 
-    public double getVoteAverage() {
+    public float getVoteAverage() {
         return voteAverage;
     }
 
@@ -82,7 +82,7 @@ public class Movie implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(releaseDate);
         parcel.writeString(rawPosterPath);
-        parcel.writeDouble(voteAverage);
+        parcel.writeFloat(voteAverage);
         parcel.writeString(overview);
     }
 

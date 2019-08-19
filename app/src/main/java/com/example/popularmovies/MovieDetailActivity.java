@@ -39,7 +39,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
                 mTitleTextView.setText(movie.getTitle());
                 mReleaseDateTextView.setText(setDate(movie.getReleaseDate()));
-                mVoteAverageTextView.setText(String.format("%s/10", movie.getVoteAverage() ));
+                mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(movie.getVoteAverage()) ));
                 mOverviewTextView.setText(movie.getOverview());
                 Picasso.get().load(movie.getPosterPath())
                         .placeholder(R.drawable.placeholder)
