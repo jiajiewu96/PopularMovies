@@ -3,10 +3,19 @@ package com.example.popularmovies.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.example.popularmovies.Utils.Consts;
 import com.google.gson.annotations.SerializedName;
 
+
+@Entity(tableName = "favorites")
 public class Movie implements Parcelable {
+    @PrimaryKey
+    private int id;
+
     private String title;
 
     @SerializedName("release_date")
@@ -20,19 +29,23 @@ public class Movie implements Parcelable {
 
     private String overview;
 
+    @Ignore
     public Movie() {
 
     }
 
-    public Movie(String title, String releaseDate, String posterPath, float voteAverage, String overview) {
+    public Movie(int id, String title, String releaseDate, String rawPosterPath, float voteAverage, String overview){
+        this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
-        this.rawPosterPath = posterPath;
+        this.rawPosterPath = rawPosterPath;
         this.voteAverage = voteAverage;
         this.overview = overview;
     }
 
+
     protected Movie(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         releaseDate = in.readString();
         rawPosterPath = in.readString();
@@ -51,6 +64,10 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    public int getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;
@@ -79,6 +96,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeString(releaseDate);
         parcel.writeString(rawPosterPath);
@@ -90,4 +108,6 @@ public class Movie implements Parcelable {
         return Consts.BASE_IMAGE_URL + Consts.IMAGE_SIZE +
                 imagePath;
     }
+
+
 }
