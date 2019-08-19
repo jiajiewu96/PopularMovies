@@ -1,8 +1,11 @@
 package com.example.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Movie {
+public class Movie implements Parcelable {
     private String title;
 
     @SerializedName("release_date")
@@ -27,6 +30,26 @@ public class Movie {
         this.overview = overview;
     }
 
+    protected Movie(Parcel in) {
+        title = in.readString();
+        releaseDate = in.readString();
+        posterPath = in.readString();
+        voteAverage = in.readInt();
+        overview = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
     public String getTitle() {
         return title;
     }
@@ -45,5 +68,19 @@ public class Movie {
 
     public String getOverview() {
         return overview;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(releaseDate);
+        parcel.writeString(posterPath);
+        parcel.writeInt(voteAverage);
+        parcel.writeString(overview);
     }
 }
