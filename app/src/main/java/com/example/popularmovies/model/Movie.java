@@ -1,9 +1,17 @@
 package com.example.popularmovies.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Movie {
     private String title;
+
+    @SerializedName("release_date")
     private String releaseDate;
+
+    @SerializedName("poster_path")
     private String posterPath;
+
+    @SerializedName("vote_average")
     private int voteAverage;
     private String overview;
 
