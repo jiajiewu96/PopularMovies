@@ -43,7 +43,7 @@ public class Movie implements Parcelable {
         this.overview = overview;
     }
 
-
+    @Ignore
     protected Movie(Parcel in) {
         id = in.readInt();
         title = in.readString();
@@ -53,6 +53,7 @@ public class Movie implements Parcelable {
         overview = in.readString();
     }
 
+    @Ignore
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel in) {
@@ -77,6 +78,10 @@ public class Movie implements Parcelable {
         return releaseDate;
     }
 
+    public String getRawPosterPath(){
+        return rawPosterPath;
+    }
+    @Ignore
     public String getPosterPath() {
         return buildImageUrlString(rawPosterPath);
     }
@@ -88,12 +93,12 @@ public class Movie implements Parcelable {
     public String getOverview() {
         return overview;
     }
-
+    @Ignore
     @Override
     public int describeContents() {
         return 0;
     }
-
+    @Ignore
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
@@ -104,6 +109,7 @@ public class Movie implements Parcelable {
         parcel.writeString(overview);
     }
 
+    @Ignore
     private static String buildImageUrlString(String imagePath) {
         return Consts.BASE_IMAGE_URL + Consts.IMAGE_SIZE +
                 imagePath;
