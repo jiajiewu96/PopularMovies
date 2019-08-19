@@ -36,7 +36,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             if (checkForIntentExtras()) {
                 mTitleTextView.setText(getIntent().getStringExtra(Consts.TITLE_EXTRA_KEY));
                 mReleaseDateTextView.setText(setDate(getIntent().getStringExtra(Consts.RELEASE_DATE_EXTRA_KEY)));
-                mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(getIntent().getIntExtra(Consts.VOTE_AVERAGE_EXTRA_KEY, 0))));
+                mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(getIntent().getDoubleExtra(Consts.VOTE_AVERAGE_EXTRA_KEY, 0.0))));
                 mOverviewTextView.setText(getIntent().getStringExtra(Consts.OVERVIEW_EXTRA_KEY));
                 Picasso.get().load(getIntent().getStringExtra(Consts.POSTER_PATH_EXTRA_KEY))
                         .placeholder(R.drawable.placeholder)

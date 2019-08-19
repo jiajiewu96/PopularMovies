@@ -25,7 +25,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
     private final MoviePosterClickerHandler mClickerHandler;
 
     public interface MoviePosterClickerHandler{
-        void onClick(String title, String releaseDate, String posterPath, int voteAverage, String plotSynopses);
+        void onClick(String title, String releaseDate, String posterPath, double voteAverage, String plotSynopses);
     }
 
     public void setMoviePosterStrings(List<Movie> Movies){
@@ -75,7 +75,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
             String title = mMovies.get(adapterPosition).getTitle();
             String releaseDate = mMovies.get(adapterPosition).getReleaseDate();
             String posterPath = mMovies.get(adapterPosition).getPosterPath();
-            int rating = mMovies.get(adapterPosition).getVoteAverage();
+            double rating = mMovies.get(adapterPosition).getVoteAverage();
             String overview = mMovies.get(adapterPosition).getOverview();
             mClickerHandler.onClick(title, releaseDate, posterPath, rating, overview);
         }

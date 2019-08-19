@@ -15,7 +15,8 @@ public class Movie implements Parcelable {
     private String posterPath;
 
     @SerializedName("vote_average")
-    private int voteAverage;
+    private double voteAverage;
+
     private String overview;
 
     public Movie() {
@@ -62,7 +63,7 @@ public class Movie implements Parcelable {
         return posterPath;
     }
 
-    public int getVoteAverage() {
+    public double getVoteAverage() {
         return voteAverage;
     }
 
@@ -80,7 +81,7 @@ public class Movie implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(releaseDate);
         parcel.writeString(posterPath);
-        parcel.writeInt(voteAverage);
+        parcel.writeDouble(voteAverage);
         parcel.writeString(overview);
     }
 }

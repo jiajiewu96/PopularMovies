@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -16,13 +15,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.popularmovies.Utils.Consts;
-import com.example.popularmovies.Utils.JsonUtils;
 import com.example.popularmovies.Utils.NetworkUtils;
 import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.model.MovieResponse;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler, AdapterView.OnItemSelectedListener {
 
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
         loadMovieData();
     }
+
     private int numberOfColumns() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -81,7 +83,25 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     private void loadMovieData() {
         showMoviePosters();
-        new FetchMovieTask().execute(mSortString);
+        Call<MovieResponse> responseCall = NetworkUtils.loadMovieData(mSortString);
+
+        responseCall.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if(!response.isSuccessful()){
+                    closeOnError(response.message());
+                    return;
+                }
+                List<Movie> movies = response.body().getMovies();
+                mMoviePosterAdapter.setMoviePosterStrings(movies);
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                    closeOnError(t.toString());
+            }
+        });
+
     }
 
     private void showMoviePosters() {
@@ -92,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     @Override
-    public void onClick(String title, String releaseDate, String posterPath, int voteAverage, String overview) {
+    public void onClick(String title, String releaseDate, String posterPath, double voteAverage, String overview) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra(Consts.TITLE_EXTRA_KEY, title);
         intent.putExtra(Consts.RELEASE_DATE_EXTRA_KEY, releaseDate);
@@ -127,49 +147,49 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     }
 
-    class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
+//    class FetchMovieTask extends AsyncTask<String, Void, List<Movie>>{
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            mLoadingIndicator.setVisibility(View.VISIBLE);
+//        }
+//
+//        @Override
+//        protected List<Movie> doInBackground(String... strings) {
+//
+//            String search = strings[0];
+//            URL fetchMovieUrl = NetworkUtils.buildMovieUrl(search);
+//            String response;
+//            List<Movie> movies;
+//            try {
+//                response = NetworkUtils.getResponseFromUrl(fetchMovieUrl);
+//                movies = JsonUtils.getMovieResponse(response);
+//                return movies;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                cancel(true);
+//                return null;
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Movie> movies) {
+//            mLoadingIndicator.setVisibility(View.INVISIBLE);
+//            if(movies != null){
+//                showMoviePosters();
+//                mMoviePosterAdapter.setMoviePosterStrings(movies);
+//            }
+//        }
+//
+//        @Override
+//        protected void onCancelled() {
+//            super.onCancelled();
+//            closeOnError();
+//        }
+//    }
 
-        @Override
-        protected List<Movie> doInBackground(String... strings) {
-
-            String search = strings[0];
-            URL fetchMovieUrl = NetworkUtils.buildMovieUrl(search);
-            String response;
-            List<Movie> movies;
-            try {
-                response = NetworkUtils.getResponseFromUrl(fetchMovieUrl);
-                movies = JsonUtils.getMovies(response);
-                return movies;
-            } catch (IOException e) {
-                e.printStackTrace();
-                cancel(true);
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movies) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if(movies != null){
-                showMoviePosters();
-                mMoviePosterAdapter.setMoviePosterStrings(movies);
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            closeOnError();
-        }
-    }
-
-    private void closeOnError() {
+    private void closeOnError(String errorMessage) {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
-        mErrorMessageDisplay.setText(R.string.io_error);
+        mErrorMessageDisplay.setText(errorMessage);
     }
 }
