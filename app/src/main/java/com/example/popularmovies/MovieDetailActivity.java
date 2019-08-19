@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.popularmovies.Utils.Consts;
+import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 

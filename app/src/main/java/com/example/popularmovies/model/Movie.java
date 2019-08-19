@@ -7,7 +7,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.popularmovies.Utils.Consts;
+import com.example.popularmovies.utils.Consts;
 import com.google.gson.annotations.SerializedName;
 
 

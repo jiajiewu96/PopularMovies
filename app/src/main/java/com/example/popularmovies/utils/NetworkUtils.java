@@ -1,15 +1,9 @@
-package com.example.popularmovies.Utils;
+package com.example.popularmovies.utils;
 
-import com.example.popularmovies.RetroFitInterfaces.MovieDBService;
-import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.retrofitInterfaces.MovieDBService;
 import com.example.popularmovies.model.MovieResponse;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

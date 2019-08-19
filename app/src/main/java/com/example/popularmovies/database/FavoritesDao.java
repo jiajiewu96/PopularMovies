@@ -1,4 +1,4 @@
-package com.example.popularmovies.FavoritesDatabase;
+package com.example.popularmovies.database;
 
 
 import androidx.room.Dao;

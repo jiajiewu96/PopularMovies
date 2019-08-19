@@ -14,8 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.popularmovies.Utils.Consts;
-import com.example.popularmovies.Utils.NetworkUtils;
+import com.example.popularmovies.utils.Consts;
+import com.example.popularmovies.utils.NetworkUtils;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 

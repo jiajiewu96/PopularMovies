@@ -1,9 +1,6 @@
-package com.example.popularmovies.RetroFitInterfaces;
+package com.example.popularmovies.retrofitInterfaces;
 
-import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
