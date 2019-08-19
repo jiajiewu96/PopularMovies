@@ -29,6 +29,9 @@ public class Movie implements Parcelable {
 
     private String overview;
 
+
+    private boolean favorited;
+
     @Ignore
     public Movie() {
 
@@ -51,6 +54,7 @@ public class Movie implements Parcelable {
         rawPosterPath = in.readString();
         voteAverage = in.readFloat();
         overview = in.readString();
+        favorited = in.readInt() == 1;
     }
 
     @Ignore
@@ -93,6 +97,16 @@ public class Movie implements Parcelable {
     public String getOverview() {
         return overview;
     }
+
+
+    public void setFavorited(boolean favorited){
+        this.favorited = favorited;
+    }
+
+
+    public boolean isFavorited() {
+        return favorited;
+    }
     @Ignore
     @Override
     public int describeContents() {
@@ -107,6 +121,7 @@ public class Movie implements Parcelable {
         parcel.writeString(rawPosterPath);
         parcel.writeFloat(voteAverage);
         parcel.writeString(overview);
+        parcel.writeInt(favorited? 1 : 0);
     }
 
     @Ignore

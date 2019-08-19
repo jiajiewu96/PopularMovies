@@ -9,7 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="40dp">
+        android:paddingBottom="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -132,6 +132,18 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_overview_label"
                 app:layout_constraintTop_toBottomOf="@+id/tv_overview_label"
                 tools:text="@string/overview_label" />
+
+            <ImageView
+                android:id="@+id/iv_favorite_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/iv_detail_poster"
+                app:layout_constraintTop_toTopOf="@+id/iv_detail_poster"
+                android:onClick="saveToFavorites"
+                tools:src="@drawable/ic_favorite_unselected" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>
