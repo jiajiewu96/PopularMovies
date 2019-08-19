@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.popularmovies.Utils.Consts;
+import com.example.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -34,11 +35,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         findViews();
         if (getIntent() != null) {
             if (checkForIntentExtras()) {
-                mTitleTextView.setText(getIntent().getStringExtra(Consts.TITLE_EXTRA_KEY));
-                mReleaseDateTextView.setText(setDate(getIntent().getStringExtra(Consts.RELEASE_DATE_EXTRA_KEY)));
-                mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(getIntent().getDoubleExtra(Consts.VOTE_AVERAGE_EXTRA_KEY, 0.0))));
-                mOverviewTextView.setText(getIntent().getStringExtra(Consts.OVERVIEW_EXTRA_KEY));
-                Picasso.get().load(getIntent().getStringExtra(Consts.POSTER_PATH_EXTRA_KEY))
+                Movie movie = getIntent().getParcelableExtra(Consts.MOVIE_EXTRA_KEY);
+
+                mTitleTextView.setText(movie.getTitle());
+                mReleaseDateTextView.setText(setDate(movie.getReleaseDate()));
+                mVoteAverageTextView.setText(String.format("%s/10", movie.getVoteAverage() ));
+                mOverviewTextView.setText(movie.getOverview());
+                Picasso.get().load(movie.getPosterPath())
                         .placeholder(R.drawable.placeholder)
                         .error(R.drawable.placeholder)
                         .into(mPosterImageView);
@@ -62,11 +65,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private boolean checkForIntentExtras() {
-        return getIntent().hasExtra(Consts.TITLE_EXTRA_KEY) &&
-                getIntent().hasExtra(Consts.POSTER_PATH_EXTRA_KEY) &&
-                getIntent().hasExtra(Consts.OVERVIEW_EXTRA_KEY) &&
-                getIntent().hasExtra(Consts.VOTE_AVERAGE_EXTRA_KEY) &&
-                getIntent().hasExtra(Consts.RELEASE_DATE_EXTRA_KEY);
+        return getIntent().hasExtra(Consts.MOVIE_EXTRA_KEY);
     }
 
     private void findViews() {

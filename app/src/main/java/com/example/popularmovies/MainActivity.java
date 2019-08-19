@@ -112,13 +112,9 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     @Override
-    public void onClick(String title, String releaseDate, String posterPath, double voteAverage, String overview) {
+    public void onClick(Movie movie) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
-        intent.putExtra(Consts.TITLE_EXTRA_KEY, title);
-        intent.putExtra(Consts.RELEASE_DATE_EXTRA_KEY, releaseDate);
-        intent.putExtra(Consts.POSTER_PATH_EXTRA_KEY, posterPath);
-        intent.putExtra(Consts.VOTE_AVERAGE_EXTRA_KEY, voteAverage);
-        intent.putExtra(Consts.OVERVIEW_EXTRA_KEY, overview);
+        intent.putExtra(Consts.MOVIE_EXTRA_KEY, movie);
         startActivity(intent);
     }
 
