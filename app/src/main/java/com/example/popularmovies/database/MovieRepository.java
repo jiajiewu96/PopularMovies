@@ -35,8 +35,20 @@ public class MovieRepository {
         return NetworkUtils.loadMovieData(sortParams);
     }
 
-    public static FavoritesDatabase getFavoritesDatabaseInstance(Context context){
+    private FavoritesDatabase getFavoritesDatabase(Context context){
         return FavoritesDatabase.getInstance(context);
+    }
+
+    public LiveData<List<Movie>> getFavoritesFromDB(Context context){
+        return getFavoritesDatabase(context).favoritesDao().loadAllFavorites();
+    }
+
+    public void addFavoriteToFavoriteDatabase(Movie movie, Context context){
+        getFavoritesDatabase(context).favoritesDao().insertFavorite(movie);
+    }
+
+    public void deleteFavoriteFromFavoriteDatabase(Movie movie, Context context){
+        getFavoritesDatabase(context).favoritesDao().deleteFavorite(movie);
     }
 
 }

@@ -32,7 +32,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     private static final String OUTPUT_DATE_PATTERN = "MMMM dd, yyyy";
 
     private Movie mMovie;
-    private FavoritesDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
             }
         }
-        mDb = MovieRepository.getFavoritesDatabaseInstance(this);
+
     }
 
     private void setUnfavoritedImage() {
@@ -80,11 +79,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         if(mMovie.getFavorited() != Consts.FAVORITED_VALUE_TRUE) {
             mMovie.setFavorited(Consts.FAVORITED_VALUE_TRUE);
             setFavoritedImage();
-            //mDb.favoritesDao().insertFavorite(mMovie);
         } else{
             mMovie.setFavorited(Consts.FAVORITED_VALUE_FALSE);
             setUnfavoritedImage();
-            //mDb.favoritesDao().deleteFavorite(mMovie);
         }
     }
 
