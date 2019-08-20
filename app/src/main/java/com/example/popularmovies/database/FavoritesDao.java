@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface FavoritesDao {
 
-    @Query("SELECT * FROM favorites")
+    @Query("SELECT * FROM favorites WHERE favorited = 1")
     LiveData<List<Movie>> loadAllFavorites();
 
     @Insert

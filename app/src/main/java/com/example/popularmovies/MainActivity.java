@@ -45,13 +45,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSpinner = (Spinner) findViewById(R.id.sort_spinner);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_posters);
-
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
-
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        findViews();
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
         mRecyclerView.setLayoutManager(layoutManager);
@@ -69,6 +63,16 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mSortString = Consts.POPULAR_PARAM;
 
         loadMovieData();
+    }
+
+    private void findViews() {
+        mSpinner = (Spinner) findViewById(R.id.sort_spinner);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_posters);
+
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
     }
 
     private int numberOfColumns() {

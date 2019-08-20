@@ -30,7 +30,7 @@ public class Movie implements Parcelable {
     private String overview;
 
 
-    private boolean favorited;
+    private int favorited;
 
     @Ignore
     public Movie() {
@@ -54,7 +54,7 @@ public class Movie implements Parcelable {
         rawPosterPath = in.readString();
         voteAverage = in.readFloat();
         overview = in.readString();
-        favorited = in.readInt() == 1;
+        favorited = in.readInt();
     }
 
     @Ignore
@@ -99,12 +99,12 @@ public class Movie implements Parcelable {
     }
 
 
-    public void setFavorited(boolean favorited){
+    public void setFavorited(int favorited){
         this.favorited = favorited;
     }
 
 
-    public boolean isFavorited() {
+    public int getFavorited() {
         return favorited;
     }
     @Ignore
@@ -121,7 +121,7 @@ public class Movie implements Parcelable {
         parcel.writeString(rawPosterPath);
         parcel.writeFloat(voteAverage);
         parcel.writeString(overview);
-        parcel.writeInt(favorited? 1 : 0);
+        parcel.writeInt(favorited);
     }
 
     @Ignore

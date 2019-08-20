@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.popularmovies.database.FavoritesDatabase;
+import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
@@ -58,7 +59,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
             }
         }
-        mDb = FavoritesDatabase.getInstance(this);
+        mDb = MovieRepository.getFavoritesDatabaseInstance(this);
     }
 
     private void setUnfavoritedImage() {
@@ -72,16 +73,16 @@ public class MovieDetailActivity extends AppCompatActivity {
 
 
     private boolean checkForFavorited() {
-        return mMovie.isFavorited();
+        return mMovie.getFavorited() == 1;
     }
 
     public void saveToFavorites(View view){
-        if(!mMovie.isFavorited()) {
-            mMovie.setFavorited(true);
+        if(mMovie.getFavorited() != Consts.FAVORITED_VALUE_TRUE) {
+            mMovie.setFavorited(Consts.FAVORITED_VALUE_TRUE);
             setFavoritedImage();
             //mDb.favoritesDao().insertFavorite(mMovie);
         } else{
-            mMovie.setFavorited(false);
+            mMovie.setFavorited(Consts.FAVORITED_VALUE_FALSE);
             setUnfavoritedImage();
             //mDb.favoritesDao().deleteFavorite(mMovie);
         }
