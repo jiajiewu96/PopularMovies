@@ -29,7 +29,7 @@ public class Movie implements Parcelable {
 
     private String overview;
 
-
+    @Ignore
     private int favorited;
 
     @Ignore
@@ -98,12 +98,12 @@ public class Movie implements Parcelable {
         return overview;
     }
 
-
+    @Ignore
     public void setFavorited(int favorited){
         this.favorited = favorited;
     }
 
-
+    @Ignore
     public int getFavorited() {
         return favorited;
     }

@@ -23,12 +23,12 @@ public class FavoritesViewModel extends ViewModel {
         mMovieRepository = movieRepository;
     }
 
-    public void addFavorite(int id){
-        mMovieRepository.addFavoriteToFavoriteDatabase(id);
+    public void addFavorite(Movie movie){
+        mMovieRepository.addFavoriteToFavoriteDatabase(movie);
     }
 
-    public void removeFavorite(int id){
-        mMovieRepository.deleteFavoriteFromFavoriteDatabase(id);
+    public void removeFavorite(Movie movie){
+        mMovieRepository.deleteFavoriteFromFavoriteDatabase(movie);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory{

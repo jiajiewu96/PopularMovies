@@ -88,11 +88,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         if(mMovie.getFavorited() != Consts.FAVORITED_VALUE_TRUE) {
             mMovie.setFavorited(Consts.FAVORITED_VALUE_TRUE);
             setFavoritedImage();
-            mFavoritesViewModel.addFavorite(mMovie.getId());
+            mFavoritesViewModel.addFavorite(mMovie);
         } else{
             mMovie.setFavorited(Consts.FAVORITED_VALUE_FALSE);
             setUnfavoritedImage();
-            mFavoritesViewModel.removeFavorite(mMovie.getId());
+            mFavoritesViewModel.removeFavorite(mMovie);
         }
     }
 

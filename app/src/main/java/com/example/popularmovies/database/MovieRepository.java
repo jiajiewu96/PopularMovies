@@ -1,6 +1,7 @@
 package com.example.popularmovies.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -13,6 +14,8 @@ import java.util.List;
 import retrofit2.Call;
 
 public class MovieRepository {
+
+    private static final String TAG = MovieRepository.class.getSimpleName();
 
     private static final Object LOCK = new Object();
     private static MovieRepository sInstance;
@@ -36,19 +39,23 @@ public class MovieRepository {
     }
 
     public Call<MovieResponse> getMoviesFromAPI(String sortParams){
+        Log.d(TAG, "REPOSITORY.API_RETRIEVAL: getMoviesFromAPI");
         return NetworkUtils.loadMovieData(sortParams);
     }
 
     public LiveData<List<Movie>> getFavoritesFromDB(){
+        Log.d(TAG, "REPOSITORY.DATABASE_RETRIEVAL: getFavoritesFromDB");
         return mDatabase.favoritesDao().loadAllFavorites();
     }
 
-    public void addFavoriteToFavoriteDatabase(int id){
-        mDatabase.favoritesDao().insertFavorite(id);
+    public void addFavoriteToFavoriteDatabase(Movie movie){
+        Log.d(TAG, "REPOSITORY.DATABASE_INSERT: addFavoriteToFavoriteDatabase");
+        mDatabase.favoritesDao().insertFavorite(movie);
     }
 
-    public void deleteFavoriteFromFavoriteDatabase(int id){
-        mDatabase.favoritesDao().deleteFavorite(id);
+    public void deleteFavoriteFromFavoriteDatabase(Movie movie){
+        Log.d(TAG, "REPOSITORY.DATABASE_DELETE: deleteFavoriteFromFavoriteDatabase");
+        mDatabase.favoritesDao().deleteFavorite(movie);
     }
 
 }

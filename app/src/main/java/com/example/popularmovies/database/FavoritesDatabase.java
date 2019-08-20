@@ -1,6 +1,7 @@
 package com.example.popularmovies.database;
 
 import android.content.Context;
+import android.nfc.Tag;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -10,6 +11,7 @@ import com.example.popularmovies.model.Movie;
 
 @Database(entities = {Movie.class}, version = 1, exportSchema = false)
 public abstract class FavoritesDatabase extends RoomDatabase {
+
     private static final Object LOCK = new Object();
     private static FavoritesDatabase sInstance;
     private static final String DATABASE_NAME = "favorites_database";

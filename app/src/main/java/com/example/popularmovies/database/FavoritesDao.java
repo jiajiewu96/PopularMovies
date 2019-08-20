@@ -15,12 +15,12 @@ import java.util.List;
 @Dao
 public interface FavoritesDao {
 
-    @Query("SELECT * FROM favorites WHERE favorited = 1")
+    @Query("SELECT * FROM favorites")
     LiveData<List<Movie>> loadAllFavorites();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertFavorite(int id);
+    void insertFavorite(Movie movie);
 
     @Delete
-    void deleteFavorite(int id);
+    void deleteFavorite(Movie movie);
 }
