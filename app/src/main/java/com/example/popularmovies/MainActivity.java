@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.utils.NetworkUtils;
 import com.example.popularmovies.model.Movie;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     private void loadMovieData() {
         showMoviePosters();
-        Call<MovieResponse> responseCall = NetworkUtils.loadMovieData(mSortString);
+        Call<MovieResponse> responseCall = MovieRepository.getMoviesFromAPI(mSortString);
 
         responseCall.enqueue(new Callback<MovieResponse>() {
             @Override

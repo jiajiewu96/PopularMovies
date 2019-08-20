@@ -1,6 +1,7 @@
 package com.example.popularmovies.database;
 
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,11 +15,11 @@ import java.util.List;
 public interface FavoritesDao {
 
     @Query("SELECT * FROM favorites")
-    List<Movie> loadAllMovies();
+    LiveData<List<Movie>> loadAllFavorites();
 
     @Insert
-    void insertMovie(Movie movie);
+    void insertFavorite(Movie movie);
 
     @Delete
-    void deleteMovie(Movie movie);
+    void deleteFavorite(Movie movie);
 }

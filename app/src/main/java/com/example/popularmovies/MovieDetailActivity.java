@@ -79,11 +79,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         if(!mMovie.isFavorited()) {
             mMovie.setFavorited(true);
             setFavoritedImage();
-            //mDb.favoritesDao().insertMovie(mMovie);
+            //mDb.favoritesDao().insertFavorite(mMovie);
         } else{
             mMovie.setFavorited(false);
             setUnfavoritedImage();
-            //mDb.favoritesDao().deleteMovie(mMovie);
+            //mDb.favoritesDao().deleteFavorite(mMovie);
         }
     }
 
