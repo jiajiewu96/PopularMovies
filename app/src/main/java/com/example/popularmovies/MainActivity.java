@@ -84,7 +84,9 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     private void loadMovieData() {
         showMoviePosters();
-        Call<MovieResponse> responseCall = MovieRepository.getMoviesFromAPI(mSortString);
+
+        MovieRepository movieRepository = MovieRepository.getInstance();
+        Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
 
         responseCall.enqueue(new Callback<MovieResponse>() {
             @Override

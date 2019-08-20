@@ -12,7 +12,25 @@ import retrofit2.Call;
 
 public class MovieRepository {
 
-    public static Call<MovieResponse> getMoviesFromAPI(String sortParams){
+    private static final Object LOCK = new Object();
+    private static MovieRepository sInstance;
+    private boolean mInitialized = false;
+
+
+    private MovieRepository(){
+
+    }
+
+    public synchronized static MovieRepository getInstance(){
+        if(sInstance == null){
+            synchronized (LOCK){
+                sInstance = new MovieRepository();
+            }
+        }
+        return sInstance;
+    }
+
+    public Call<MovieResponse> getMoviesFromAPI(String sortParams){
         return NetworkUtils.loadMovieData(sortParams);
     }
 
