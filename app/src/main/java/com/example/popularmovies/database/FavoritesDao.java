@@ -18,8 +18,8 @@ public interface FavoritesDao {
     LiveData<List<Movie>> loadAllFavorites();
 
     @Insert
-    void insertFavorite(Movie movie);
+    void insertFavorite(int id);
 
     @Delete
-    void deleteFavorite(Movie movie);
+    void deleteFavorite(int id);
 }

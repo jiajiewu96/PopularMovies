@@ -6,33 +6,46 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.popularmovies.BaseApp;
 import com.example.popularmovies.model.Movie;
 
 import java.util.List;
 
-public class FavoritesViewModel extends AndroidViewModel {
+public class FavoritesViewModel extends ViewModel {
 
     private static MovieRepository mMovieRepository;
 
-    private static LiveData<List<Movie>> mFavorites;
+    public FavoritesViewModel(@NonNull Application application, MovieRepository movieRepository) {
 
-    public FavoritesViewModel(@NonNull Application application) {
-        super(application);
-
-        mMovieRepository = MovieRepository.getInstance();
-        mFavorites = mMovieRepository.getFavoritesFromDB(this.getApplication());
+        mMovieRepository = movieRepository;
     }
 
-    public static LiveData<List<Movie>> getFavorites(){
-        return mFavorites;
+    public void addFavorite(int id){
+        mMovieRepository.addFavoriteToFavoriteDatabase(id);
     }
 
-    public void addFavorite(Movie movie){
-        mMovieRepository.addFavoriteToFavoriteDatabase(movie, this.getApplication());
+    public void removeFavorite(int id){
+        mMovieRepository.deleteFavoriteFromFavoriteDatabase(id);
     }
 
-    public void removeFavorite(Movie movie){
-        mMovieRepository.deleteFavoriteFromFavoriteDatabase(movie, this.getApplication());
+    public static class Factory extends ViewModelProvider.NewInstanceFactory{
+        @NonNull
+        private final Application mApplication;
+
+        private final MovieRepository mRepository;
+
+        public Factory(@NonNull Application application){
+            mApplication = application;
+            mRepository = ((BaseApp) application).getRepository();
+        }
+
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            return (T) new FavoritesViewModel(mApplication, mRepository);
+        }
     }
 }

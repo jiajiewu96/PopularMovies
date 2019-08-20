@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -88,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
     private void loadMovieData() {
         showMoviePosters();
-
-        MovieRepository movieRepository = MovieRepository.getInstance();
+        Application application = getApplication();
+        MovieRepository movieRepository = ((BaseApp) application).getRepository();
         Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
 
         responseCall.enqueue(new Callback<MovieResponse>() {

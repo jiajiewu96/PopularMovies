@@ -2,14 +2,14 @@ package com.example.popularmovies;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.popularmovies.database.FavoritesDatabase;
-import com.example.popularmovies.database.MovieRepository;
+import com.example.popularmovies.database.FavoritesViewModel;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
@@ -32,11 +32,15 @@ public class MovieDetailActivity extends AppCompatActivity {
     private static final String OUTPUT_DATE_PATTERN = "MMMM dd, yyyy";
 
     private Movie mMovie;
+    private FavoritesViewModel mFavoritesViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+
+
 
         findViews();
         if (getIntent() != null) {
@@ -59,6 +63,13 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
         }
 
+        FavoritesViewModel.Factory factory = new FavoritesViewModel.Factory(
+                this.getApplication());
+
+        mFavoritesViewModel = ViewModelProviders.of(this, factory)
+                .get(FavoritesViewModel.class);
+
+
     }
 
     private void setUnfavoritedImage() {
@@ -69,8 +80,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         mFavoritedImageView.setImageResource(R.drawable.ic_favorite_selected);
     }
 
-
-
     private boolean checkForFavorited() {
         return mMovie.getFavorited() == 1;
     }
@@ -79,9 +88,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         if(mMovie.getFavorited() != Consts.FAVORITED_VALUE_TRUE) {
             mMovie.setFavorited(Consts.FAVORITED_VALUE_TRUE);
             setFavoritedImage();
+            mFavoritesViewModel.addFavorite(mMovie.getId());
         } else{
             mMovie.setFavorited(Consts.FAVORITED_VALUE_FALSE);
             setUnfavoritedImage();
+            mFavoritesViewModel.removeFavorite(mMovie.getId());
         }
     }
 

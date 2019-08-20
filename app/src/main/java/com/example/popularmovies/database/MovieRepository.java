@@ -17,15 +17,19 @@ public class MovieRepository {
     private static final Object LOCK = new Object();
     private static MovieRepository sInstance;
     private boolean mInitialized = false;
+    private final FavoritesDatabase mDatabase;
 
-    private MovieRepository(){
 
+    private MovieRepository(final FavoritesDatabase movieDatabase){
+        mDatabase = movieDatabase;
     }
 
-    public synchronized static MovieRepository getInstance(){
+    public synchronized static MovieRepository getInstance(FavoritesDatabase database){
         if(sInstance == null){
             synchronized (LOCK){
-                sInstance = new MovieRepository();
+                if(sInstance == null) {
+                    sInstance = new MovieRepository(database);
+                }
             }
         }
         return sInstance;
@@ -35,20 +39,16 @@ public class MovieRepository {
         return NetworkUtils.loadMovieData(sortParams);
     }
 
-    private FavoritesDatabase getFavoritesDatabase(Context context){
-        return FavoritesDatabase.getInstance(context);
+    public LiveData<List<Movie>> getFavoritesFromDB(){
+        return mDatabase.favoritesDao().loadAllFavorites();
     }
 
-    public LiveData<List<Movie>> getFavoritesFromDB(Context context){
-        return getFavoritesDatabase(context).favoritesDao().loadAllFavorites();
+    public void addFavoriteToFavoriteDatabase(int id){
+        mDatabase.favoritesDao().insertFavorite(id);
     }
 
-    public void addFavoriteToFavoriteDatabase(Movie movie, Context context){
-        getFavoritesDatabase(context).favoritesDao().insertFavorite(movie);
-    }
-
-    public void deleteFavoriteFromFavoriteDatabase(Movie movie, Context context){
-        getFavoritesDatabase(context).favoritesDao().deleteFavorite(movie);
+    public void deleteFavoriteFromFavoriteDatabase(int id){
+        mDatabase.favoritesDao().deleteFavorite(id);
     }
 
 }
