@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.popularmovies.model.Movie;
@@ -19,6 +20,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
     private List<Movie> mMovies;
     private final MoviePosterClickerHandler mClickerHandler;
 
+
     public interface MoviePosterClickerHandler{
         void onClick(Movie movie);
     }
@@ -27,6 +29,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         this.mMovies = Movies;
         notifyDataSetChanged();
     }
+
 
     public MoviePosterAdapter(MoviePosterClickerHandler clickerHandler){
         mClickerHandler = clickerHandler;

@@ -22,7 +22,7 @@ public class FavoriteListViewModel extends AndroidViewModel {
         mFavorites = mMovieRepository.getFavoritesFromDB();
     }
 
-    public static LiveData<List<Movie>> getFavorites(){
+    public LiveData<List<Movie>> getFavorites(){
         return mFavorites;
     }
 

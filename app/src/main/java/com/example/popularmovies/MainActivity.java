@@ -1,6 +1,9 @@
 package com.example.popularmovies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,9 +18,9 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.popularmovies.database.FavoriteListViewModel;
 import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.utils.Consts;
-import com.example.popularmovies.utils.NetworkUtils;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 
@@ -63,7 +66,43 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         //default sort param
         mSortString = Consts.POPULAR_PARAM;
 
-        loadMovieData();
+        loadMoviesFromApi();
+    }
+
+    @Override
+    public void onClick(Movie movie) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra(Consts.MOVIE_EXTRA_KEY, movie);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        int itemPos = adapterView.getSelectedItemPosition();
+        switch (itemPos){
+            case 0:
+                mSortString = Consts.POPULAR_PARAM;
+                loadMoviesFromApi();
+                break;
+            case 1:
+                mSortString = Consts.TOP_RATED_PARAM;
+                loadMoviesFromApi();
+                break;
+            case 2:
+                loadFavoritesFromDB();
+                break;
+            default:
+                mSortString = Consts.POPULAR_PARAM;
+                loadMoviesFromApi();
+                break;
+        }
+
+    }
+
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     private void findViews() {
@@ -87,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         return nColumns;
     }
 
-    private void loadMovieData() {
+    private void loadMoviesFromApi() {
         showMoviePosters();
         Application application = getApplication();
         MovieRepository movieRepository = ((BaseApp) application).getRepository();
@@ -106,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
-                    closeOnError(t.toString());
+                closeOnError(t.toString());
             }
         });
 
@@ -119,36 +158,14 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onClick(Movie movie) {
-        Intent intent = new Intent(this, MovieDetailActivity.class);
-        intent.putExtra(Consts.MOVIE_EXTRA_KEY, movie);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        int itemPos = adapterView.getSelectedItemPosition();
-        switch (itemPos){
-            case 0:
-                mSortString = Consts.POPULAR_PARAM;
-                loadMovieData();
-                break;
-            case 1:
-                mSortString = Consts.TOP_RATED_PARAM;
-                loadMovieData();
-                break;
-            default:
-                mSortString = Consts.POPULAR_PARAM;
-                loadMovieData();
-                break;
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
+    private void loadFavoritesFromDB() {
+        FavoriteListViewModel viewModel = ViewModelProviders.of(this).get(FavoriteListViewModel.class);
+        viewModel.getFavorites().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> favorites) {
+                mMoviePosterAdapter.setMoviePosterStrings(favorites);
+            }
+        });
     }
 
     private void closeOnError(String errorMessage) {

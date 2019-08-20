@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.popularmovies.model.Movie;
@@ -17,7 +18,7 @@ public interface FavoritesDao {
     @Query("SELECT * FROM favorites WHERE favorited = 1")
     LiveData<List<Movie>> loadAllFavorites();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertFavorite(int id);
 
     @Delete
