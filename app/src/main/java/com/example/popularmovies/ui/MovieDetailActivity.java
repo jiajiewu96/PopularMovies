@@ -3,15 +3,19 @@ package com.example.popularmovies.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.popularmovies.AppExecutors;
 import com.example.popularmovies.R;
 import com.example.popularmovies.database.viewModels.FavoritesViewModel;
+import com.example.popularmovies.ui.adapters.TrailerAdapter;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
@@ -29,6 +33,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private ImageView mPosterImageView;
     private TextView mOverviewTextView;
     private ImageView mFavoritedImageView;
+
+    private TextView mNoTrailersTextView;
+    private RecyclerView mTrailerRecycler;
 
     private static final String INPUT_DATE_PATTERN = "yyyy-MM-dd";
     private static final String OUTPUT_DATE_PATTERN = "MMMM dd, yyyy";
@@ -55,20 +62,52 @@ public class MovieDetailActivity extends AppCompatActivity {
             if (checkForIntentExtras()) {
                 mMovie = getIntent().getParcelableExtra(Consts.MOVIE_EXTRA_KEY);
 
-                setTitle(mMovie.getTitle());
-                mTitleTextView.setText(mMovie.getTitle());
-                mReleaseDateTextView.setText(setDate(mMovie.getReleaseDate()));
-                mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(mMovie.getVoteAverage())));
-                mOverviewTextView.setText(mMovie.getOverview());
-
-                Picasso.get().load(mMovie.getPosterPath())
-                        .placeholder(R.drawable.placeholder)
-                        .error(R.drawable.placeholder)
-                        .into(mPosterImageView);
-
+                setMovieDetails();
                 checkForMovieInFavoriteDB();
+                setUpTrailers();
             }
         }
+    }
+
+    private void findViews() {
+        mTitleTextView = (TextView) findViewById(R.id.tv_title);
+        mReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
+        mVoteAverageTextView = (TextView) findViewById(R.id.tv_rating);
+        mPosterImageView = (ImageView) findViewById(R.id.iv_detail_poster);
+        mOverviewTextView = (TextView) findViewById(R.id.tv_overview);
+        mFavoritedImageView = (ImageView) findViewById(R.id.iv_favorite_button);
+
+        mNoTrailersTextView = (TextView) findViewById(R.id.tv_no_trailers);
+        mTrailerRecycler = (RecyclerView) findViewById(R.id.recyclerview_trailer);
+    }
+    private void setUpTrailers() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mTrailerRecycler.setLayoutManager(linearLayoutManager);
+
+        TrailerAdapter trailerAdapter = new TrailerAdapter();
+        mTrailerRecycler.setAdapter(trailerAdapter);
+    }
+
+    private void setMovieDetails() {
+        setTitle(mMovie.getTitle());
+        mTitleTextView.setText(mMovie.getTitle());
+        mReleaseDateTextView.setText(setDate(mMovie.getReleaseDate()));
+        mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(mMovie.getVoteAverage())));
+        mOverviewTextView.setText(mMovie.getOverview());
+
+        Picasso.get().load(mMovie.getPosterPath())
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .into(mPosterImageView);
+    }
+
+    private void showTrailers(){
+        mNoTrailersTextView.setVisibility(View.INVISIBLE);
+        mTrailerRecycler.setVisibility(View.VISIBLE);
+    }
+    private void hideTrailers(){
+        mNoTrailersTextView.setVisibility(View.INVISIBLE);
+        mTrailerRecycler.setVisibility(View.VISIBLE);
     }
 
     private void checkForMovieInFavoriteDB() {
@@ -132,15 +171,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private boolean checkForIntentExtras() {
         return getIntent().hasExtra(Consts.MOVIE_EXTRA_KEY);
-    }
-
-    private void findViews() {
-        mTitleTextView = (TextView) findViewById(R.id.tv_title);
-        mReleaseDateTextView = (TextView) findViewById(R.id.tv_release_date);
-        mVoteAverageTextView = (TextView) findViewById(R.id.tv_rating);
-        mPosterImageView = (ImageView) findViewById(R.id.iv_detail_poster);
-        mOverviewTextView = (TextView) findViewById(R.id.tv_overview);
-        mFavoritedImageView = (ImageView) findViewById(R.id.iv_favorite_button);
     }
 
     private void setFavoriteUnselectedImage() {

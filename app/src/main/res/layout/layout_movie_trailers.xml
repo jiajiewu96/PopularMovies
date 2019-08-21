@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:visibility="invisible"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:text="There are no trailers available for this movie" />
+        tools:text="@string/no_trailers_string" />
 </FrameLayout>
