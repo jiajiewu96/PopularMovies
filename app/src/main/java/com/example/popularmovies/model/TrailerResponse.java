@@ -1,23 +1,16 @@
 package com.example.popularmovies.model;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrailerResponse {
+    private List<Trailer> results;
 
-    private String key;
-    private String name;
-    @SerializedName("site")
-    private String siteName;
-
-    public String getSiteName() {
-        return siteName;
+    public TrailerResponse() {
+        results = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getKey() {
-        return key;
+    public List<Trailer> getResults() {
+        return results;
     }
 }
