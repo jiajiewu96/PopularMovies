@@ -1,5 +1,6 @@
 package com.example.popularmovies.retrofitInterfaces;
 
+import com.example.popularmovies.model.CommentResponse;
 import com.example.popularmovies.model.MovieResponse;
 import com.example.popularmovies.model.TrailerResponse;
 
@@ -13,4 +14,6 @@ public interface MovieDBService {
     Call<MovieResponse> getMovieResponse(@Path("search_param") String searchParam, @Query("api_key") String apiKey);
     @GET("{id}/videos")
     Call<TrailerResponse> getTrailerResponse(@Path("id")String movieId, @Query("api_key") String apiKey);
+    @GET("{id}/reviews")
+    Call<CommentResponse> getCommentResponse(@Path("id")String movieId, @Query("api_key") String apiKey);
 }
