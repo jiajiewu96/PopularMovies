@@ -18,11 +18,12 @@
 
     <TextView
         android:id="@+id/tv_trailer_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_trailer_thumb"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Trailer Name" />
