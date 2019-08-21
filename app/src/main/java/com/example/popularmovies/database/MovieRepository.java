@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.popularmovies.model.CommentResponse;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 import com.example.popularmovies.model.TrailerResponse;
@@ -45,6 +46,10 @@ public class MovieRepository {
 
     public Call<TrailerResponse> getTrailersForId(String movieID){
         return NetworkUtils.loadTrailerData(movieID);
+    }
+
+    public Call<CommentResponse> getCommentsForId(String movieID){
+        return NetworkUtils.loadCommentData(movieID);
     }
 
     public LiveData<List<Movie>> getFavoritesFromDB(){
