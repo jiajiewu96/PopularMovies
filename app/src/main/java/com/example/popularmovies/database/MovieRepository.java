@@ -58,4 +58,8 @@ public class MovieRepository {
         mDatabase.favoritesDao().deleteFavorite(movie);
     }
 
+    public boolean checkIfMovieInDatabase(Movie movie){
+        return mDatabase.favoritesDao().checkForMovie(movie.getId()) != null;
+    }
+
 }

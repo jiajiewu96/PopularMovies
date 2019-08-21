@@ -36,34 +36,14 @@ public class MovieDetailActivity extends AppCompatActivity {
     private Movie mMovie;
     private FavoritesViewModel mFavoritesViewModel;
 
+    private boolean mInDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-
-
         findViews();
-        if (getIntent() != null) {
-            if (checkForIntentExtras()) {
-                mMovie = getIntent().getParcelableExtra(Consts.MOVIE_EXTRA_KEY);
-                setTitle(mMovie.getTitle());
-                mTitleTextView.setText(mMovie.getTitle());
-                mReleaseDateTextView.setText(setDate(mMovie.getReleaseDate()));
-                mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(mMovie.getVoteAverage()) ));
-                mOverviewTextView.setText(mMovie.getOverview());
-                Picasso.get().load(mMovie.getPosterPath())
-                        .placeholder(R.drawable.placeholder)
-                        .error(R.drawable.placeholder)
-                        .into(mPosterImageView);
-                if (checkForFavorited()) {
-                    setFavoritedImage();
-                } else {
-                    setUnfavoritedImage();
-                }
-            }
-        }
 
         FavoritesViewModel.Factory factory = new FavoritesViewModel.Factory(
                 this.getApplication());
@@ -71,25 +51,48 @@ public class MovieDetailActivity extends AppCompatActivity {
         mFavoritesViewModel = ViewModelProviders.of(this, factory)
                 .get(FavoritesViewModel.class);
 
+        if (getIntent() != null) {
+            if (checkForIntentExtras()) {
+                mMovie = getIntent().getParcelableExtra(Consts.MOVIE_EXTRA_KEY);
+
+                setTitle(mMovie.getTitle());
+                mTitleTextView.setText(mMovie.getTitle());
+                mReleaseDateTextView.setText(setDate(mMovie.getReleaseDate()));
+                mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(mMovie.getVoteAverage())));
+                mOverviewTextView.setText(mMovie.getOverview());
+
+                Picasso.get().load(mMovie.getPosterPath())
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.placeholder)
+                        .into(mPosterImageView);
+
+                checkForMovieInFavoriteDB();
+            }
+        }
+    }
+
+    private void checkForMovieInFavoriteDB() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (mFavoritesViewModel.checkMovie(mMovie)) {
+                    mInDb = true;
+                    mMovie.setFavorited(Consts.FAVORITED_VALUE_TRUE);
+                    setFavoriteSelectedImage();
+                } else {
+                    mInDb = false;
+                    mMovie.setFavorited(Consts.FAVORITED_VALUE_FALSE);
+                    setFavoriteUnselectedImage();
+                }
+            }
+        });
 
     }
 
-    private void setUnfavoritedImage() {
-        mFavoritedImageView.setImageResource(R.drawable.ic_favorite_unselected);
-    }
-
-    private void setFavoritedImage() {
-        mFavoritedImageView.setImageResource(R.drawable.ic_favorite_selected);
-    }
-
-    private boolean checkForFavorited() {
-        return mMovie.getFavorited() == 1;
-    }
-
-    public void saveToFavorites(View view){
-        if(mMovie.getFavorited() != Consts.FAVORITED_VALUE_TRUE) {
+    public void favoriteOnClick(View view) {
+        if (mMovie.getFavorited() != Consts.FAVORITED_VALUE_TRUE) {
             mMovie.setFavorited(Consts.FAVORITED_VALUE_TRUE);
-            setFavoritedImage();
+            setFavoriteSelectedImage();
             AppExecutors.getInstance().diskIO().execute(
                     new Runnable() {
                         @Override
@@ -98,9 +101,9 @@ public class MovieDetailActivity extends AppCompatActivity {
                         }
                     }
             );
-        } else{
+        } else {
             mMovie.setFavorited(Consts.FAVORITED_VALUE_FALSE);
-            setUnfavoritedImage();
+            setFavoriteUnselectedImage();
             AppExecutors.getInstance().diskIO().execute(
                     new Runnable() {
                         @Override
@@ -138,5 +141,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         mPosterImageView = (ImageView) findViewById(R.id.iv_detail_poster);
         mOverviewTextView = (TextView) findViewById(R.id.tv_overview);
         mFavoritedImageView = (ImageView) findViewById(R.id.iv_favorite_button);
+    }
+
+    private void setFavoriteUnselectedImage() {
+        mFavoritedImageView.setImageResource(R.drawable.ic_favorite_unselected);
+    }
+
+    private void setFavoriteSelectedImage() {
+        mFavoritedImageView.setImageResource(R.drawable.ic_favorite_selected);
     }
 }

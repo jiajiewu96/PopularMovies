@@ -27,6 +27,10 @@ public class FavoritesViewModel extends ViewModel {
         mMovieRepository.deleteFavoriteFromFavoriteDatabase(movie);
     }
 
+    public boolean checkMovie(Movie movie){
+        return mMovieRepository.checkIfMovieInDatabase(movie);
+    }
+
     public static class Factory extends ViewModelProvider.NewInstanceFactory{
         @NonNull
         private final Application mApplication;
