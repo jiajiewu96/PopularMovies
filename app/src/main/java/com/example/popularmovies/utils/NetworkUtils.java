@@ -38,4 +38,11 @@ public class NetworkUtils {
         return movieDBService.getTrailerResponse(id, BuildConfig.POPULAR_MOVIES_API_KEY);
     }
 
+    public static Call<TrailerResponse> loadCommentData(String id){
+        Retrofit retrofit = buildRetrofitUrl();
+        MovieDBService movieDBService = retrofit.create(MovieDBService.class);
+
+        return movieDBService.getTrailerResponse(id, BuildConfig.POPULAR_MOVIES_API_KEY);
+    }
+
 }
