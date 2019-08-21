@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
+import com.example.popularmovies.model.TrailerResponse;
 import com.example.popularmovies.utils.NetworkUtils;
 
 import java.util.List;
@@ -39,22 +40,22 @@ public class MovieRepository {
     }
 
     public Call<MovieResponse> getMoviesFromAPI(String sortParams){
-        Log.d(TAG, "REPOSITORY.API_RETRIEVAL: getMoviesFromAPI");
         return NetworkUtils.loadMovieData(sortParams);
     }
 
+    public Call<TrailerResponse> getTrailersForId(String movieID){
+        return NetworkUtils.loadTrailerData(movieID);
+    }
+
     public LiveData<List<Movie>> getFavoritesFromDB(){
-        Log.d(TAG, "REPOSITORY.DATABASE_RETRIEVAL: getFavoritesFromDB");
         return mDatabase.favoritesDao().loadAllFavorites();
     }
 
     public void addFavoriteToFavoriteDatabase(Movie movie){
-        Log.d(TAG, "REPOSITORY.DATABASE_INSERT: addFavoriteToFavoriteDatabase");
         mDatabase.favoritesDao().insertFavorite(movie);
     }
 
     public void deleteFavoriteFromFavoriteDatabase(Movie movie){
-        Log.d(TAG, "REPOSITORY.DATABASE_DELETE: deleteFavoriteFromFavoriteDatabase");
         mDatabase.favoritesDao().deleteFavorite(movie);
     }
 
