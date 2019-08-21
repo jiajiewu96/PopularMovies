@@ -10,6 +10,8 @@
     <string name="poster">Poster</string>
     <string name="no_trailers_string">There are no trailers available for this movie</string>
     <string name="trailers_label">Trailers:</string>
+    <string name="comments_label">Comments:</string>
+    <string name="no_comments_tool">There are no comments for this video</string>
     <string-array name="sort_array">
         <item>Popular</item>
         <item>Top Rated</item>

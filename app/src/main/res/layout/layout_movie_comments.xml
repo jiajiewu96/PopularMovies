@@ -1,38 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
     <TextView
+        android:id="@+id/comment_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/trailers_label"
+        android:text="@string/comments_label"
         android:padding="8dp"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:src="@color/colorPrimaryDark"/>
     <FrameLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:layout_height="wrap_content">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_trailer"
+            android:id="@+id/recyclerview_comments"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/trailer_item">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
+            android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/tv_no_trailers"
+            android:id="@+id/tv_no_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:visibility="invisible"
-            tools:text="@string/no_trailers_string" />
+            tools:text="@string/no_comments_tool" />
     </FrameLayout>
 </LinearLayout>
