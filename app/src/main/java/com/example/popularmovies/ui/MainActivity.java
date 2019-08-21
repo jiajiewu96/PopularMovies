@@ -10,6 +10,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler, AdapterView.OnItemSelectedListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private Spinner mSpinner;
 
     private MoviePosterAdapter mMoviePosterAdapter;
@@ -68,20 +70,21 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         //default sort param
 
         if(savedInstanceState != null){
-            if(savedInstanceState.containsKey(Consts.SORT_STRING_KEY)){
-                mSortString = savedInstanceState.getString(Consts.SORT_STRING_KEY);
+            if(savedInstanceState.containsKey(Consts.SPINNER_KEY)){
+                Log.d(TAG, "onCreate: setting spinner selection" + savedInstanceState.getInt(Consts.SPINNER_KEY));
+                mSpinner.setSelection(savedInstanceState.getInt(Consts.SPINNER_KEY));
             }
         }else{
             mSortString = Consts.POPULAR_PARAM;
+            loadMoviesFromApi();
         }
-
-        loadMoviesFromApi();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(Consts.SORT_STRING_KEY, mSortString);
+        Log.d(TAG, "onSaveInstanceState: Writing to save instance state");
+        outState.putInt(Consts.SPINNER_KEY, mSpinner.getSelectedItemPosition());
     }
 
     @Override

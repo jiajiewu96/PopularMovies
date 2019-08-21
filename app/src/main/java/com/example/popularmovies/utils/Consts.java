@@ -3,6 +3,7 @@ package com.example.popularmovies.utils;
 public class Consts {
 
     public static final String SORT_STRING_KEY = "sort_string";
+    public static final String SPINNER_KEY = "spinner_key";
 
     public static final String POPULAR_PARAM = "popular";
     public static final String TOP_RATED_PARAM = "top_rated";
