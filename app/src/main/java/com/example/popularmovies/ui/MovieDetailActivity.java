@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements TrailerAdapter.TrailerClickHandler {
 
     private TextView mTitleTextView;
     private TextView mReleaseDateTextView;
@@ -96,7 +99,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mTrailerRecycler.setLayoutManager(linearLayoutManager);
 
-        mTrailerAdapter = new TrailerAdapter();
+        mTrailerAdapter = new TrailerAdapter(this);
         mTrailerRecycler.setAdapter(mTrailerAdapter);
     }
 
@@ -216,5 +219,17 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void setFavoriteSelectedImage() {
         mFavoritedImageView.setImageResource(R.drawable.ic_favorite_selected);
+    }
+
+    @Override
+    public void onClick(String trailerId) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube" + trailerId));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v="+trailerId));
+        try{
+            startActivity(appIntent);
+        }catch (ActivityNotFoundException e){
+            startActivity(webIntent);
+        }
     }
 }

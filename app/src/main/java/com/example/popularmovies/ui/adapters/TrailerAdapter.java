@@ -20,14 +20,21 @@ import java.util.List;
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerViewHolder> {
 
     private List<Trailer> mTrailers;
+    private final TrailerClickHandler mClickHandler;
+
+    public interface TrailerClickHandler{
+        void onClick(String trailerId);
+    }
 
     public void setTrailerData(List<Trailer> trailers){
         mTrailers = trailers;
         notifyDataSetChanged();
     }
 
-    public TrailerAdapter(){
+    public TrailerAdapter(TrailerClickHandler clickHandler){
+        mClickHandler = clickHandler;
         mTrailers = new ArrayList<>();
+
     }
 
     private String buildYouTubeThumbNail(String key) {
@@ -63,7 +70,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         }
     }
 
-    public class TrailerViewHolder extends RecyclerView.ViewHolder{
+    public class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView trailerThumbnail;
         TextView trailerName;
         TextView trailerSite;
@@ -72,6 +79,14 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
             trailerThumbnail = itemView.findViewById(R.id.iv_trailer_thumb);
             trailerName = itemView.findViewById(R.id.tv_trailer_name);
             trailerSite = itemView.findViewById(R.id.tv_trailer_site_name);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(mTrailers.get(getAdapterPosition()).getSiteName().equals("YouTube")) {
+                mClickHandler.onClick(mTrailers.get(getAdapterPosition()).getKey());
+            }
         }
     }
 }
