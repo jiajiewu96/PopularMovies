@@ -1,11 +1,8 @@
 package com.example.popularmovies.database;
 
-import android.content.Context;
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 
-import com.example.popularmovies.model.CommentResponse;
+import com.example.popularmovies.model.ReviewResponse;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 import com.example.popularmovies.model.TrailerResponse;
@@ -48,8 +45,8 @@ public class MovieRepository {
         return NetworkUtils.loadTrailerData(movieID);
     }
 
-    public Call<CommentResponse> getCommentsForId(String movieID){
-        return NetworkUtils.loadCommentData(movieID);
+    public Call<ReviewResponse> getReviewForId(String movieID){
+        return NetworkUtils.loadReviewData(movieID);
     }
 
     public LiveData<List<Movie>> getFavoritesFromDB(){

@@ -19,7 +19,7 @@ import com.example.popularmovies.BaseApp;
 import com.example.popularmovies.R;
 import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.database.viewModels.FavoritesViewModel;
-import com.example.popularmovies.model.CommentResponse;
+import com.example.popularmovies.model.ReviewResponse;
 import com.example.popularmovies.model.Trailer;
 import com.example.popularmovies.model.TrailerResponse;
 import com.example.popularmovies.ui.adapters.TrailerAdapter;
@@ -79,7 +79,7 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
                 checkForMovieInFavoriteDB();
                 setUpTrailers();
                 loadTrailersFromAPI();
-                loadCommentFromAPI();
+                loadReviewsFromAPI();
             }
         }
     }
@@ -128,18 +128,18 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
 
     }
 
-    private void loadCommentFromAPI() {
+    private void loadReviewsFromAPI() {
         MovieRepository movieRepository = ((BaseApp) getApplication()).getRepository();
-        Call<CommentResponse> responseCall = movieRepository.getCommentsForId(Integer.toString(mMovie.getId()));
+        Call<ReviewResponse> responseCall = movieRepository.getReviewForId(Integer.toString(mMovie.getId()));
 
-        responseCall.enqueue(new Callback<CommentResponse>() {
+        responseCall.enqueue(new Callback<ReviewResponse>() {
             @Override
-            public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
+            public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
 
             }
 
             @Override
-            public void onFailure(Call<CommentResponse> call, Throwable t) {
+            public void onFailure(Call<ReviewResponse> call, Throwable t) {
 
             }
         });

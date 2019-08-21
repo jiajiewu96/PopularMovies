@@ -1,13 +1,10 @@
 package com.example.popularmovies.utils;
 
 import com.example.popularmovies.BuildConfig;
-import com.example.popularmovies.model.CommentResponse;
-import com.example.popularmovies.model.Trailer;
+import com.example.popularmovies.model.ReviewResponse;
 import com.example.popularmovies.model.TrailerResponse;
 import com.example.popularmovies.retrofitInterfaces.MovieDBService;
 import com.example.popularmovies.model.MovieResponse;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -39,7 +36,7 @@ public class NetworkUtils {
         return movieDBService.getTrailerResponse(id, BuildConfig.POPULAR_MOVIES_API_KEY);
     }
 
-    public static Call<CommentResponse> loadCommentData(String id){
+    public static Call<ReviewResponse> loadReviewData(String id){
         Retrofit retrofit = buildRetrofitUrl();
         MovieDBService movieDBService = retrofit.create(MovieDBService.class);
 

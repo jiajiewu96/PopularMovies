@@ -1,6 +1,6 @@
 package com.example.popularmovies.model;
 
-public class Comment {
+public class Review {
     private String author;
     private String content;
 

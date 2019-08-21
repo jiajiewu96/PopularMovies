@@ -2,6 +2,6 @@ package com.example.popularmovies.model;
 
 import java.util.List;
 
-public class CommentResponse {
-    private List<Comment> results;
+public class ReviewResponse {
+    private List<Review> results;
 }
