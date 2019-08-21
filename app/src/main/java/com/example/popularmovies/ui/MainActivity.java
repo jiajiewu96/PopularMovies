@@ -66,9 +66,22 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(this);
         //default sort param
-        mSortString = Consts.POPULAR_PARAM;
+
+        if(savedInstanceState != null){
+            if(savedInstanceState.containsKey(Consts.SORT_STRING_KEY)){
+                mSortString = savedInstanceState.getString(Consts.SORT_STRING_KEY);
+            }
+        }else{
+            mSortString = Consts.POPULAR_PARAM;
+        }
 
         loadMoviesFromApi();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(Consts.SORT_STRING_KEY, mSortString);
     }
 
     @Override
@@ -150,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
                 closeOnError(t.toString());
             }
         });
-
     }
 
     private void showMoviePosters() {
