@@ -1,7 +1,6 @@
-package com.example.popularmovies;
+package com.example.popularmovies.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,7 +17,10 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.popularmovies.database.FavoriteListViewModel;
+import com.example.popularmovies.BaseApp;
+import com.example.popularmovies.ui.adapters.MoviePosterAdapter;
+import com.example.popularmovies.R;
+import com.example.popularmovies.database.viewModels.FavoriteListViewModel;
 import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;

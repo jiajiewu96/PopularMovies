@@ -1,18 +1,14 @@
-package com.example.popularmovies.database;
+package com.example.popularmovies.database.viewModels;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.popularmovies.BaseApp;
+import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.model.Movie;
-
-import java.util.List;
 
 public class FavoritesViewModel extends ViewModel {
 

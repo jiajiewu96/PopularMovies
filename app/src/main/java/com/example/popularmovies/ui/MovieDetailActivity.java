@@ -1,4 +1,4 @@
-package com.example.popularmovies;
+package com.example.popularmovies.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.popularmovies.database.FavoritesViewModel;
+import com.example.popularmovies.AppExecutors;
+import com.example.popularmovies.R;
+import com.example.popularmovies.database.viewModels.FavoritesViewModel;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
@@ -88,11 +90,25 @@ public class MovieDetailActivity extends AppCompatActivity {
         if(mMovie.getFavorited() != Consts.FAVORITED_VALUE_TRUE) {
             mMovie.setFavorited(Consts.FAVORITED_VALUE_TRUE);
             setFavoritedImage();
-            mFavoritesViewModel.addFavorite(mMovie);
+            AppExecutors.getInstance().diskIO().execute(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mFavoritesViewModel.addFavorite(mMovie);
+                        }
+                    }
+            );
         } else{
             mMovie.setFavorited(Consts.FAVORITED_VALUE_FALSE);
             setUnfavoritedImage();
-            mFavoritesViewModel.removeFavorite(mMovie);
+            AppExecutors.getInstance().diskIO().execute(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mFavoritesViewModel.removeFavorite(mMovie);
+                        }
+                    }
+            );
         }
     }
 

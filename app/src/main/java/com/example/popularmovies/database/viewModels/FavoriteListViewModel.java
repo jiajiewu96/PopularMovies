@@ -1,4 +1,4 @@
-package com.example.popularmovies.database;
+package com.example.popularmovies.database.viewModels;
 
 import android.app.Application;
 
@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.popularmovies.BaseApp;
+import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.model.Movie;
 
 import java.util.List;
