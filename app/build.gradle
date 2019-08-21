@@ -17,6 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each{
+        it.buildConfigField "String" , "POPULAR_MOVIES_API_KEY" , PopularMovieAPIKey
+    }
 }
 
 dependencies {

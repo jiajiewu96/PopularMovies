@@ -1,5 +1,6 @@
 package com.example.popularmovies.utils;
 
+import com.example.popularmovies.BuildConfig;
 import com.example.popularmovies.retrofitInterfaces.MovieDBService;
 import com.example.popularmovies.model.MovieResponse;
 
@@ -23,7 +24,7 @@ public class NetworkUtils {
     public static Call<MovieResponse> loadMovieData(String sortParam){
         Retrofit retrofit = buildRetrofitUrl();
         MovieDBService movieDBService = retrofit.create(MovieDBService.class);
-        return movieDBService.getMovieResponse(sortParam, Consts.API_KEY);
+        return movieDBService.getMovieResponse(sortParam, BuildConfig.POPULAR_MOVIES_API_KEY);
     }
 
 }
