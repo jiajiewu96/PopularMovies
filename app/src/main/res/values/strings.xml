@@ -9,6 +9,7 @@
     <string name="sort_by">Sort By:</string>
     <string name="poster">Poster</string>
     <string name="no_trailers_string">There are no trailers available for this movie</string>
+    <string name="trailers_label">Trailers:</string>
     <string-array name="sort_array">
         <item>Popular</item>
         <item>Top Rated</item>

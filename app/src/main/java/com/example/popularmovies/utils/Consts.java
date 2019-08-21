@@ -8,7 +8,7 @@ public class Consts {
     public static final String YOUTUBE_BASE_THUMBNAIL_URL =
             "img.youtube.com/vi/";
     public static final String YOUTUBE_MEDIUM_QUALITY =
-            "/mqdefault.jpg";
+            "/default.jpg";
 
     public static final String POPULAR_PARAM = "popular";
     public static final String TOP_RATED_PARAM = "top_rated";

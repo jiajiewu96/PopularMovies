@@ -54,8 +54,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
                 .into(holder.trailerThumbnail);
     }
 
-
-
     @Override
     public int getItemCount() {
         return mTrailers.size();
