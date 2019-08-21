@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.popularmovies.AppExecutors;
+import com.example.popularmovies.BaseApp;
 import com.example.popularmovies.R;
+import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.database.viewModels.FavoritesViewModel;
+import com.example.popularmovies.model.Trailer;
+import com.example.popularmovies.model.TrailerResponse;
 import com.example.popularmovies.ui.adapters.TrailerAdapter;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
@@ -23,7 +26,12 @@ import com.squareup.picasso.Picasso;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -44,6 +52,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private FavoritesViewModel mFavoritesViewModel;
 
     private boolean mInDb;
+    private TrailerAdapter mTrailerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +74,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 setMovieDetails();
                 checkForMovieInFavoriteDB();
                 setUpTrailers();
+                loadTrailersFromAPI();
             }
         }
     }
+
 
     private void findViews() {
         mTitleTextView = (TextView) findViewById(R.id.tv_title);
@@ -80,12 +91,37 @@ public class MovieDetailActivity extends AppCompatActivity {
         mNoTrailersTextView = (TextView) findViewById(R.id.tv_no_trailers);
         mTrailerRecycler = (RecyclerView) findViewById(R.id.recyclerview_trailer);
     }
+
     private void setUpTrailers() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mTrailerRecycler.setLayoutManager(linearLayoutManager);
 
-        TrailerAdapter trailerAdapter = new TrailerAdapter();
-        mTrailerRecycler.setAdapter(trailerAdapter);
+        mTrailerAdapter = new TrailerAdapter();
+        mTrailerRecycler.setAdapter(mTrailerAdapter);
+    }
+
+    private void loadTrailersFromAPI() {
+        showTrailers();
+        MovieRepository movieRepository = ((BaseApp) getApplication()).getRepository();
+        Call<TrailerResponse> responseCall = movieRepository.getTrailersForId(Integer.toString(mMovie.getId()));
+
+        responseCall.enqueue(new Callback<TrailerResponse>() {
+            @Override
+            public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
+                if(!response.isSuccessful()){
+                    hideTrailers();
+                    return;
+                }
+                List<Trailer> trailers = response.body().getResults();
+                mTrailerAdapter.setTrailerData(trailers);
+            }
+
+            @Override
+            public void onFailure(Call<TrailerResponse> call, Throwable t) {
+                hideTrailers();
+            }
+        });
+
     }
 
     private void setMovieDetails() {
@@ -101,11 +137,12 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .into(mPosterImageView);
     }
 
-    private void showTrailers(){
+    private void showTrailers() {
         mNoTrailersTextView.setVisibility(View.INVISIBLE);
         mTrailerRecycler.setVisibility(View.VISIBLE);
     }
-    private void hideTrailers(){
+
+    private void hideTrailers() {
         mNoTrailersTextView.setVisibility(View.INVISIBLE);
         mTrailerRecycler.setVisibility(View.VISIBLE);
     }
