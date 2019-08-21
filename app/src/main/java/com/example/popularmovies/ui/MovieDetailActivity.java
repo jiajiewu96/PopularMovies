@@ -19,6 +19,7 @@ import com.example.popularmovies.BaseApp;
 import com.example.popularmovies.R;
 import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.database.viewModels.FavoritesViewModel;
+import com.example.popularmovies.model.CommentResponse;
 import com.example.popularmovies.model.Trailer;
 import com.example.popularmovies.model.TrailerResponse;
 import com.example.popularmovies.ui.adapters.TrailerAdapter;
@@ -78,10 +79,10 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
                 checkForMovieInFavoriteDB();
                 setUpTrailers();
                 loadTrailersFromAPI();
+                loadCommentFromAPI();
             }
         }
     }
-
 
     private void findViews() {
         mTitleTextView = (TextView) findViewById(R.id.tv_title);
@@ -126,6 +127,24 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
         });
 
     }
+
+    private void loadCommentFromAPI() {
+        MovieRepository movieRepository = ((BaseApp) getApplication()).getRepository();
+        Call<CommentResponse> responseCall = movieRepository.getCommentsForId(Integer.toString(mMovie.getId()));
+
+        responseCall.enqueue(new Callback<CommentResponse>() {
+            @Override
+            public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<CommentResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     private void setMovieDetails() {
         setTitle(mMovie.getTitle());
