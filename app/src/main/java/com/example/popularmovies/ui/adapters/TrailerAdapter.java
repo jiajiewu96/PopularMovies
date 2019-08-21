@@ -56,7 +56,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     @Override
     public int getItemCount() {
-        return 5;
+        if(mTrailers.size() < 5){
+            return mTrailers.size();
+        } else {
+            return 5;
+        }
     }
 
     public class TrailerViewHolder extends RecyclerView.ViewHolder{
