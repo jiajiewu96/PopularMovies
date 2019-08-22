@@ -12,19 +12,21 @@
         android:id="@+id/sort_by_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
         android:text="@string/sort_by"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
     <Spinner
         android:id="@+id/sort_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp" />
-
+        android:layout_margin="8dp" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:src="@color/dividerColor"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

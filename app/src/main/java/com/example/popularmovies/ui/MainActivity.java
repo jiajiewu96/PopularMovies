@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mRecyclerView.setAdapter(mMoviePosterAdapter);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.sort_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                this, R.array.sort_array, R.layout.movie_spinner_item);
 
         mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(this);
@@ -157,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     private void loadMoviesFromApi() {
-        showMoviePosters();
+        showLoading();
         Application application = getApplication();
         MovieRepository movieRepository = ((BaseApp) application).getRepository();
         Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
@@ -171,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
                 }
                 List<Movie> movies = response.body().getMovies();
                 mMoviePosterAdapter.setMoviePosterStrings(movies);
+                showMoviePosters();
             }
 
             @Override
@@ -180,10 +180,14 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         });
     }
 
+    private void showLoading() {
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+    }
+
     private void showMoviePosters() {
-        /* First, make sure the error is invisible */
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        /* Then, make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
