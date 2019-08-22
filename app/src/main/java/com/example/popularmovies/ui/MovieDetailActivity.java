@@ -19,9 +19,11 @@ import com.example.popularmovies.BaseApp;
 import com.example.popularmovies.R;
 import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.database.viewModels.FavoritesViewModel;
+import com.example.popularmovies.model.Review;
 import com.example.popularmovies.model.ReviewResponse;
 import com.example.popularmovies.model.Trailer;
 import com.example.popularmovies.model.TrailerResponse;
+import com.example.popularmovies.ui.adapters.ReviewAdapter;
 import com.example.popularmovies.ui.adapters.TrailerAdapter;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
@@ -46,17 +48,19 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
     private TextView mOverviewTextView;
     private ImageView mFavoritedImageView;
 
-    private TextView mNoTrailersTextView;
-    private RecyclerView mTrailerRecycler;
-
     private static final String INPUT_DATE_PATTERN = "yyyy-MM-dd";
     private static final String OUTPUT_DATE_PATTERN = "MMMM dd, yyyy";
 
     private Movie mMovie;
     private FavoritesViewModel mFavoritesViewModel;
 
-    private boolean mInDb;
     private TrailerAdapter mTrailerAdapter;
+    private RecyclerView mTrailerRecycler;
+    private TextView mNoTrailersTextView;
+
+    private ReviewAdapter mReviewAdapter;
+    private RecyclerView mReviewRecycler;
+    private TextView mNoReviewTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +81,11 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
 
                 setMovieDetails();
                 checkForMovieInFavoriteDB();
-                setUpTrailers();
+
+                setupTrailerRecycler();
                 loadTrailersFromAPI();
+
+                setupReviewRecycler();
                 loadReviewsFromAPI();
             }
         }
@@ -94,9 +101,12 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
 
         mNoTrailersTextView = (TextView) findViewById(R.id.tv_no_trailers);
         mTrailerRecycler = (RecyclerView) findViewById(R.id.recyclerview_trailer);
+
+        mNoReviewTextView = (TextView) findViewById(R.id.tv_no_review);
+        mReviewRecycler = (RecyclerView) findViewById(R.id.recyclerview_review);
     }
 
-    private void setUpTrailers() {
+    private void setupTrailerRecycler() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mTrailerRecycler.setLayoutManager(linearLayoutManager);
 
@@ -128,19 +138,32 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
 
     }
 
+    private void setupReviewRecycler(){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mReviewRecycler.setLayoutManager(linearLayoutManager);
+
+        mReviewAdapter = new ReviewAdapter();
+        mReviewRecycler.setAdapter(mReviewAdapter);
+    }
+
     private void loadReviewsFromAPI() {
+        showReviews();
         MovieRepository movieRepository = ((BaseApp) getApplication()).getRepository();
         Call<ReviewResponse> responseCall = movieRepository.getReviewForId(Integer.toString(mMovie.getId()));
 
         responseCall.enqueue(new Callback<ReviewResponse>() {
             @Override
             public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
-
+                if(!response.isSuccessful()){
+                    hideReviews();
+                    return;
+                }
+                mReviewAdapter.setReviews(response.body().getResults());
             }
 
             @Override
             public void onFailure(Call<ReviewResponse> call, Throwable t) {
-
+                hideReviews();
             }
         });
     }
@@ -169,16 +192,26 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
         mTrailerRecycler.setVisibility(View.VISIBLE);
     }
 
+    private void showReviews(){
+        mNoReviewTextView.setVisibility(View.INVISIBLE);
+        mReviewRecycler.setVisibility(View.VISIBLE);
+    }
+
+    private void hideReviews(){
+        mReviewRecycler.setVisibility(View.INVISIBLE);
+        mNoReviewTextView.setVisibility(View.VISIBLE);
+    }
+
     private void checkForMovieInFavoriteDB() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 if (mFavoritesViewModel.checkMovie(mMovie)) {
-                    mInDb = true;
+
                     mMovie.setFavorited(Consts.FAVORITED_VALUE_TRUE);
                     setFavoriteSelectedImage();
                 } else {
-                    mInDb = false;
+
                     mMovie.setFavorited(Consts.FAVORITED_VALUE_FALSE);
                     setFavoriteUnselectedImage();
                 }

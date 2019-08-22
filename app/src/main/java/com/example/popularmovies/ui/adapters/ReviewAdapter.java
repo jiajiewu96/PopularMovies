@@ -20,6 +20,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.CommentVie
 
     public void setReviews(List<Review> reviews){
         mReviews = reviews;
+        notifyDataSetChanged();
     }
 
     public ReviewAdapter(){
