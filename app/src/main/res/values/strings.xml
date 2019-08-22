@@ -12,6 +12,10 @@
     <string name="trailers_label">Trailers:</string>
     <string name="comments_label">Comments:</string>
     <string name="no_comments_tool">There are no comments for this video</string>
+    <string name="tools_text_comment">Comment</string>
+    <string name="tools_text_author">Author:</string>
+    <string name="tools_text_site_name">Site Name</string>
+    <string name="tools_text_trailer_name">Trailer Name</string>
     <string-array name="sort_array">
         <item>Popular</item>
         <item>Top Rated</item>
