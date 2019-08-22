@@ -4,33 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/trailer_layout"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/iv_trailer_thumb"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/placeholder" />
 
     <TextView
-        android:id="@+id/tv_trailer_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:id="@+id/tv_trailer_site_name"
+        style="@style/TrailerStyle.SiteName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_trailer_thumb"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/tools_text_trailer_name" />
+        tools:text="@string/tools_text_site_name" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -40,16 +35,15 @@
         app:layout_constraintGuide_percent="0.25" />
 
     <TextView
-        android:id="@+id/tv_trailer_site_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        tools:text="@string/tools_text_site_name"
+        android:id="@+id/tv_trailer_name"
+        style="@style/TrailerStyle.TrailerName"
+        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_trailer_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_trailer_name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/tv_trailer_site_name"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="@string/tools_text_trailer_name" />
 
     <ImageView
         android:id="@+id/divider"
@@ -58,5 +52,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@color/colorPrimaryDark" />
+        app:srcCompat="@color/dividerColor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

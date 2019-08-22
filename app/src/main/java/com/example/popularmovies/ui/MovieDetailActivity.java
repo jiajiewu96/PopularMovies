@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.popularmovies.AppExecutors;
 import com.example.popularmovies.BaseApp;
@@ -90,6 +91,8 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
             }
         }
     }
+
+
 
     private void findViews() {
         mTitleTextView = (TextView) findViewById(R.id.tv_title);

@@ -1,5 +1,6 @@
 package com.example.popularmovies.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         if(savedInstanceState != null){
             if(savedInstanceState.containsKey(Consts.SPINNER_KEY)){
                 Log.d(TAG, "onCreate: setting spinner selection" + savedInstanceState.getInt(Consts.SPINNER_KEY));
-                mSpinner.setSelection(savedInstanceState.getInt(Consts.SPINNER_KEY));
+                mSpinner.setSelection(savedInstanceState.getInt(Consts.SPINNER_KEY, 0));
             }
         }else{
             mSortString = Consts.POPULAR_PARAM;
@@ -81,9 +82,20 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState!=null){
+            if(savedInstanceState.containsKey(Consts.SPINNER_KEY)){
+                Log.d(TAG, "onRestoreInstanceState: setting spinner selection" + savedInstanceState.getInt(Consts.SPINNER_KEY));
+                mSpinner.setSelection(savedInstanceState.getInt(Consts.SPINNER_KEY));
+            }
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState: Writing to save instance state");
+        Log.d(TAG, "onSaveInstanceState: Writing to save instance state for spinner");
         outState.putInt(Consts.SPINNER_KEY, mSpinner.getSelectedItemPosition());
     }
 

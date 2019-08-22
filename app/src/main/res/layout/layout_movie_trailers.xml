@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <TextView
+        style="@style/LabelStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/trailers_label"
@@ -11,7 +12,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:src="@color/colorPrimaryDark"/>
+        android:src="@color/dividerColor"/>
     <FrameLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"

@@ -6,16 +6,17 @@
     android:orientation="vertical">
 
     <TextView
+        style="@style/LabelStyle"
         android:id="@+id/comment_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@string/comments_label" />
+        android:text="@string/reviews_label" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:src="@color/colorPrimaryDark" />
+        android:src="@color/dividerColor" />
 
     <FrameLayout
         android:layout_width="match_parent"
