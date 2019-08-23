@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.MoviePosterViewHolder> {
 
-    private List<Movie> mMovies;
+    private ArrayList<Movie> mMovies;
     private final MoviePosterClickerHandler mClickerHandler;
 
 
@@ -25,7 +25,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         void onClick(Movie movie);
     }
 
-    public void setMoviePosterStrings(List<Movie> Movies){
+    public void setMoviePosterStrings(ArrayList<Movie> Movies){
         this.mMovies = Movies;
         notifyDataSetChanged();
     }

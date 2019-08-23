@@ -30,6 +30,8 @@ import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -66,6 +68,13 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mMoviePosterAdapter = new MoviePosterAdapter(this);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.sort_array, R.layout.movie_spinner_item);
+
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(this);
+
         mRecyclerView.setAdapter(mMoviePosterAdapter);
         mAdapter = ArrayAdapter.createFromResource(
                 this, R.array.sort_array, R.layout.movie_spinner_item);
@@ -169,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
                     closeOnError(response.message());
                     return;
                 }
-                List<Movie> movies = response.body().getMovies();
+                ArrayList<Movie> movies = (ArrayList<Movie>) response.body().getMovies();
                 mMoviePosterAdapter.setMoviePosterStrings(movies);
                 showMoviePosters();
             }
@@ -197,7 +206,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         viewModel.getFavorites().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> favorites) {
-                mMoviePosterAdapter.setMoviePosterStrings(favorites);
+                ArrayList<Movie> movies = (ArrayList<Movie>) favorites;
+                mMoviePosterAdapter.setMoviePosterStrings(movies);
             }
         });
     }
