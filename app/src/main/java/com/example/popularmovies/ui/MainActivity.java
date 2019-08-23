@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private ProgressBar mLoadingIndicator;
 
     private static String mSortString;
+    private GridLayoutManager mLayoutManager;
+
+    private Parcelable mRecyclerState;
+    private ArrayAdapter<CharSequence> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,25 +62,16 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
         findViews();
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
-        mRecyclerView.setLayoutManager(layoutManager);
+        mLayoutManager = new GridLayoutManager(this, numberOfColumns());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         mMoviePosterAdapter = new MoviePosterAdapter(this);
         mRecyclerView.setAdapter(mMoviePosterAdapter);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        mAdapter = ArrayAdapter.createFromResource(
                 this, R.array.sort_array, R.layout.movie_spinner_item);
 
-        mSpinner.setAdapter(adapter);
-        mSpinner.setOnItemSelectedListener(this);
         //default sort param
-
-        if(savedInstanceState != null){
-            if(savedInstanceState.containsKey(Consts.SPINNER_KEY)){
-                Log.d(TAG, "onCreate: setting spinner selection" + savedInstanceState.getInt(Consts.SPINNER_KEY));
-                mSpinner.setSelection(savedInstanceState.getInt(Consts.SPINNER_KEY, 0));
-            }
-        }else{
+        if(savedInstanceState == null){
             mSortString = Consts.POPULAR_PARAM;
             loadMoviesFromApi();
         }
@@ -84,8 +81,10 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if(savedInstanceState!=null){
-            if(savedInstanceState.containsKey(Consts.SPINNER_KEY)){
-                Log.d(TAG, "onRestoreInstanceState: setting spinner selection" + savedInstanceState.getInt(Consts.SPINNER_KEY));
+            if(savedInstanceState.containsKey(Consts.MOVIE_RECYCLER_KEY)){
+                Log.d(TAG, "onCreate: setting recylcer save instance state");
+                mLayoutManager.onRestoreInstanceState(mRecyclerState);
+            }if(savedInstanceState.containsKey(Consts.SPINNER_KEY)){
                 mSpinner.setSelection(savedInstanceState.getInt(Consts.SPINNER_KEY));
             }
         }
@@ -96,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState: Writing to save instance state for spinner");
         outState.putInt(Consts.SPINNER_KEY, mSpinner.getSelectedItemPosition());
+        mRecyclerState = mLayoutManager.onSaveInstanceState();
+        outState.putParcelable(Consts.MOVIE_RECYCLER_KEY, mRecyclerState);
     }
 
     @Override
