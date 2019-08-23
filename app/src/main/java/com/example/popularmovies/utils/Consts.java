@@ -5,6 +5,7 @@ public class Consts {
     public static final String SORT_STRING_KEY = "sort_string";
     public static final String SPINNER_KEY = "spinner_key";
     public static final String MOVIE_RECYCLER_KEY = "movie_recycler_key";
+    public static final String PERSIST_MOVIE_KEY = "movies_to_persist";
 
 
     public static final String YOUTUBE_BASE_THUMBNAIL_URL =

@@ -1,6 +1,5 @@
 package com.example.popularmovies.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,7 +28,6 @@ import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private GridLayoutManager mLayoutManager;
 
     private Parcelable mRecyclerState;
-    private ArrayAdapter<CharSequence> mAdapter;
+    private ArrayAdapter<CharSequence> mSpinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,26 +73,23 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         mSpinner.setOnItemSelectedListener(this);
 
         mRecyclerView.setAdapter(mMoviePosterAdapter);
-        mAdapter = ArrayAdapter.createFromResource(
+        mSpinnerAdapter = ArrayAdapter.createFromResource(
                 this, R.array.sort_array, R.layout.movie_spinner_item);
 
-        //default sort param
-        if(savedInstanceState == null){
-            mSortString = Consts.POPULAR_PARAM;
-            loadMoviesFromApi();
-        }
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState!=null){
-            if(savedInstanceState.containsKey(Consts.MOVIE_RECYCLER_KEY)){
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(Consts.MOVIE_RECYCLER_KEY)) {
                 Log.d(TAG, "onCreate: setting recylcer save instance state");
                 mLayoutManager.onRestoreInstanceState(mRecyclerState);
-            }if(savedInstanceState.containsKey(Consts.SPINNER_KEY)){
+            }
+            if (savedInstanceState.containsKey(Consts.SPINNER_KEY)) {
                 mSpinner.setSelection(savedInstanceState.getInt(Consts.SPINNER_KEY));
             }
+            if (savedInstanceState.containsKey(Consts.PERSIST_MOVIE_KEY)) {
+                mMoviePosterAdapter.setMoviePosterStrings(savedInstanceState.<Movie>getParcelableArrayList(Consts.PERSIST_MOVIE_KEY));
+            }
+        } else {
+            mSortString = Consts.POPULAR_PARAM;
+            loadMoviesFromApi();
         }
     }
 
@@ -106,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         outState.putInt(Consts.SPINNER_KEY, mSpinner.getSelectedItemPosition());
         mRecyclerState = mLayoutManager.onSaveInstanceState();
         outState.putParcelable(Consts.MOVIE_RECYCLER_KEY, mRecyclerState);
+        outState.putParcelableArrayList(Consts.PERSIST_MOVIE_KEY, mMoviePosterAdapter.getMovies());
     }
 
     @Override
@@ -118,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         int itemPos = adapterView.getSelectedItemPosition();
-        switch (itemPos){
+        switch (itemPos) {
             case 0:
                 mSortString = Consts.POPULAR_PARAM;
                 loadMoviesFromApi();
@@ -168,18 +163,20 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private void loadMoviesFromApi() {
         showLoading();
         Application application = getApplication();
-        MovieRepository movieRepository = ((BaseApp) application).getRepository();
+        final MovieRepository movieRepository = ((BaseApp) application).getRepository();
         Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
 
         responseCall.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                if(!response.isSuccessful()){
+                if (!response.isSuccessful()) {
                     closeOnError(response.message());
                     return;
                 }
+
                 ArrayList<Movie> movies = (ArrayList<Movie>) response.body().getMovies();
                 mMoviePosterAdapter.setMoviePosterStrings(movies);
+
                 showMoviePosters();
             }
 

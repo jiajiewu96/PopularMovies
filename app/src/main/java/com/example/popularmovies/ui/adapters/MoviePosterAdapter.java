@@ -30,6 +30,10 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
         notifyDataSetChanged();
     }
 
+    public ArrayList<Movie> getMovies(){
+        return mMovies;
+    }
+
 
     public MoviePosterAdapter(MoviePosterClickerHandler clickerHandler){
         mClickerHandler = clickerHandler;
