@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+    <style name="LabelStyle">
+        <item name="android:textColor">@color/secondaryText</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+    <style name="TrailerStyle.SiteName">
+        <item name="android:textColor">@color/secondaryText</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="ReviewStyle.Author">
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+</resources>

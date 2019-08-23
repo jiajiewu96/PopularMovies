@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private GridLayoutManager mLayoutManager;
 
     private Parcelable mRecyclerState;
-    private ArrayAdapter<CharSequence> mSpinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +65,14 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
         mMoviePosterAdapter = new MoviePosterAdapter(this);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<CharSequence> mSpinnerAdapter = ArrayAdapter.createFromResource(
                 this, R.array.sort_array, R.layout.movie_spinner_item);
 
-        mSpinner.setAdapter(adapter);
+        mSpinner.setAdapter(mSpinnerAdapter);
         mSpinner.setOnItemSelectedListener(this);
 
         mRecyclerView.setAdapter(mMoviePosterAdapter);
-        mSpinnerAdapter = ArrayAdapter.createFromResource(
-                this, R.array.sort_array, R.layout.movie_spinner_item);
+
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(Consts.MOVIE_RECYCLER_KEY)) {
@@ -174,10 +172,14 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
                     return;
                 }
 
-                ArrayList<Movie> movies = (ArrayList<Movie>) response.body().getMovies();
-                mMoviePosterAdapter.setMoviePosterStrings(movies);
-
-                showMoviePosters();
+                ArrayList<Movie> movies;
+                if (response.body() != null) {
+                    movies = (ArrayList<Movie>) response.body().getMovies();
+                    mMoviePosterAdapter.setMoviePosterStrings(movies);
+                    showMoviePosters();
+                }else{
+                    closeOnError(getString(R.string.io_error));
+                }
             }
 
             @Override

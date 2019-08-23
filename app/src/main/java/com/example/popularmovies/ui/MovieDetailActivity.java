@@ -13,14 +13,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.example.popularmovies.AppExecutors;
 import com.example.popularmovies.BaseApp;
 import com.example.popularmovies.R;
 import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.database.viewModels.FavoritesViewModel;
-import com.example.popularmovies.model.Review;
 import com.example.popularmovies.model.ReviewResponse;
 import com.example.popularmovies.model.Trailer;
 import com.example.popularmovies.model.TrailerResponse;
@@ -129,8 +127,12 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
                     hideTrailers();
                     return;
                 }
-                List<Trailer> trailers = response.body().getResults();
-                mTrailerAdapter.setTrailerData(trailers);
+                List<Trailer> trailers = null;
+                if (response.body() != null) {
+                    trailers = response.body().getResults();
+                    mTrailerAdapter.setTrailerData(trailers);
+                }
+
             }
 
             @Override
@@ -161,7 +163,10 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
                     hideReviews();
                     return;
                 }
-                mReviewAdapter.setReviews(response.body().getResults());
+
+                if (response.body() != null) {
+                    mReviewAdapter.setReviews(response.body().getResults());
+                }
             }
 
             @Override

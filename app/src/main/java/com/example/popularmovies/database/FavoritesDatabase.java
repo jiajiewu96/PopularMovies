@@ -1,7 +1,6 @@
 package com.example.popularmovies.database;
 
 import android.content.Context;
-import android.nfc.Tag;
 
 import androidx.room.Database;
 import androidx.room.Room;
