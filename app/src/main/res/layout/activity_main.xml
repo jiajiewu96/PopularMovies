@@ -8,28 +8,8 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
-    <TextView
-        android:id="@+id/sort_by_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp"
-        android:paddingRight="8dp"
-        android:text="@string/sort_by"
-        android:textSize="20sp" />
 
-    <Spinner
-        android:id="@+id/sort_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp" />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:src="@color/dividerColor"/>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
 
         <ProgressBar
             android:id="@+id/pb_loading_indicator"
@@ -51,6 +31,5 @@
             android:text="@string/default_error_message"
             android:textSize="20sp"
             android:visibility="invisible" />
-    </FrameLayout>
 
 </LinearLayout>

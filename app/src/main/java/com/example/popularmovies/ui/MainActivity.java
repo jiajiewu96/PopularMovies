@@ -1,5 +1,6 @@
 package com.example.popularmovies.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,6 +13,9 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,10 +39,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler, AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements MoviePosterAdapter.MoviePosterClickerHandler {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private Spinner mSpinner;
 
     private MoviePosterAdapter mMoviePosterAdapter;
 
@@ -65,11 +68,6 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
         mMoviePosterAdapter = new MoviePosterAdapter(this);
 
-        ArrayAdapter<CharSequence> mSpinnerAdapter = ArrayAdapter.createFromResource(
-                this, R.array.sort_array, R.layout.movie_spinner_item);
-
-        mSpinner.setAdapter(mSpinnerAdapter);
-        mSpinner.setOnItemSelectedListener(this);
 
         mRecyclerView.setAdapter(mMoviePosterAdapter);
 
@@ -78,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
             if (savedInstanceState.containsKey(Consts.MOVIE_RECYCLER_KEY)) {
                 Log.d(TAG, "onCreate: setting recylcer save instance state");
                 mLayoutManager.onRestoreInstanceState(mRecyclerState);
-            }
-            if (savedInstanceState.containsKey(Consts.SPINNER_KEY)) {
-                mSpinner.setSelection(savedInstanceState.getInt(Consts.SPINNER_KEY));
             }
             if (savedInstanceState.containsKey(Consts.PERSIST_MOVIE_KEY)) {
                 mMoviePosterAdapter.setMoviePosterStrings(savedInstanceState.<Movie>getParcelableArrayList(Consts.PERSIST_MOVIE_KEY));
@@ -94,12 +89,11 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState: Writing to save instance state for spinner");
-        outState.putInt(Consts.SPINNER_KEY, mSpinner.getSelectedItemPosition());
         mRecyclerState = mLayoutManager.onSaveInstanceState();
         outState.putParcelable(Consts.MOVIE_RECYCLER_KEY, mRecyclerState);
         outState.putParcelableArrayList(Consts.PERSIST_MOVIE_KEY, mMoviePosterAdapter.getMovies());
     }
+
 
     @Override
     public void onClick(Movie movie) {
@@ -109,36 +103,39 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        int itemPos = adapterView.getSelectedItemPosition();
-        switch (itemPos) {
-            case 0:
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_filter, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_popular:
+                item.setChecked(!item.isChecked());
                 mSortString = Consts.POPULAR_PARAM;
                 loadMoviesFromApi();
-                break;
-            case 1:
+                return true;
+            case R.id.menu_item_top_rated:
+                item.setChecked(!item.isChecked());
                 mSortString = Consts.TOP_RATED_PARAM;
                 loadMoviesFromApi();
-                break;
-            case 2:
+                return true;
+            case R.id.menu_item_favorites:
+                item.setChecked(!item.isChecked());
                 loadFavoritesFromDB();
-                break;
+                return true;
             default:
                 mSortString = Consts.POPULAR_PARAM;
                 loadMoviesFromApi();
-                break;
+                return super.onOptionsItemSelected(item);
+
         }
-
-    }
-
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
     private void findViews() {
-        mSpinner = (Spinner) findViewById(R.id.sort_spinner);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_posters);
 
@@ -177,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
                     movies = (ArrayList<Movie>) response.body().getMovies();
                     mMoviePosterAdapter.setMoviePosterStrings(movies);
                     showMoviePosters();
-                }else{
+                } else {
                     closeOnError(getString(R.string.io_error));
                 }
             }
