@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textview_padding">2dp</dimen>
+    <dimen name="textview_margin_top">4dp</dimen>
+    <dimen name="textview_margin_horizontal">2dp</dimen>
+    <dimen name="movie_poster_name_textSize">18sp</dimen>
+
+</resources>

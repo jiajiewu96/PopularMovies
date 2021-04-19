@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +56,7 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)
                 .into(holder.posterImageView);
+        holder.posterTextView.setText(mMovies.get(position).getTitle());
     }
 
     @Override
@@ -64,9 +66,11 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterAdapter.
 
     class MoviePosterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView posterImageView;
+        TextView posterTextView;
         MoviePosterViewHolder(@NonNull View itemView) {
             super(itemView);
-            posterImageView = itemView.findViewById(R.id.movie_poster);
+            posterImageView = itemView.findViewById(R.id.movie_poster_iv);
+            posterTextView = itemView.findViewById(R.id.movie_poster_name_tv);
             itemView.setOnClickListener(this);
         }
 

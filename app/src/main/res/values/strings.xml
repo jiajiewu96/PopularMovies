@@ -16,6 +16,7 @@
     <string name="tools_text_author">Author:</string>
     <string name="tools_text_site_name">Site Name</string>
     <string name="tools_text_trailer_name">Trailer Name</string>
+    <string name="movie_name">Movie Name</string>
     <string-array name="sort_array">
         <item>Popular</item>
         <item>Top Rated</item>
