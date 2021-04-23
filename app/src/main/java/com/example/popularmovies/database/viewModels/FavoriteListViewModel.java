@@ -27,5 +27,9 @@ public class FavoriteListViewModel extends AndroidViewModel {
         return mFavorites;
     }
 
+    public void addMovie(Movie movie){
+        mMovieRepository.addFavoriteToFavoriteDatabase(movie);
+    }
+
 
 }

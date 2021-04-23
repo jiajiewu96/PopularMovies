@@ -40,7 +40,6 @@ public class StorageUtils {
         }
 
         try {
-
             ArrayList<String[]> values = StringUtils.openFile(fileToRead);
             Log.d(TAG, values.toString());
             currentMovie = new Movie(Integer.parseInt(values.get(0)[1]), values.get(1)[1], values.get(2)[1], values.get(3)[1]);

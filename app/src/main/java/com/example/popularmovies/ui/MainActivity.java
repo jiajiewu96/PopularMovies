@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.popularmovies.AppExecutors;
 import com.example.popularmovies.BaseApp;
 import com.example.popularmovies.ui.adapters.MoviePosterAdapter;
 import com.example.popularmovies.R;
@@ -29,7 +30,6 @@ import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 import com.example.popularmovies.utils.StorageUtils;
-import com.example.popularmovies.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private static String mSortString;
     private GridLayoutManager mLayoutManager;
 
+    private FavoriteListViewModel mViewModel;
+
     private Parcelable mRecyclerState;
 
     @Override
@@ -63,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         findViews();
 
         Movie testMovie = StorageUtils.getMovieFromStorage();
-        Log.d(TAG, testMovie.toString());
+        createViewModel();
+        addMovie(testMovie);
         mLayoutManager = new GridLayoutManager(this, numberOfColumns());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
             loadMoviesFromApi();
         }
     }
+
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -199,8 +204,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     private void loadFavoritesFromDB() {
-        FavoriteListViewModel viewModel = new ViewModelProvider(this).get(FavoriteListViewModel.class);
-        viewModel.getFavorites().observe(this, new Observer<List<Movie>>() {
+        mViewModel.getFavorites().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> favorites) {
                 ArrayList<Movie> movies = (ArrayList<Movie>) favorites;
@@ -212,5 +216,20 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     private void closeOnError(String errorMessage) {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
         mErrorMessageDisplay.setText(errorMessage);
+    }
+
+    private void createViewModel() {
+        mViewModel = new ViewModelProvider(this).get(FavoriteListViewModel.class);
+    }
+
+    private void addMovie(final Movie movie){
+        AppExecutors.getInstance().diskIO().execute(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        mViewModel.addMovie(movie);
+                    }
+                }
+        );
     }
 }
