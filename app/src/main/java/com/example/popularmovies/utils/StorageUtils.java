@@ -39,17 +39,11 @@ public class StorageUtils {
             return currentMovie;
         }
 
-        if (!fileToRead.exists() || fileToRead.isHidden()) {
-            Log.d(TAG, String.valueOf(fileToRead.exists()) + fileToRead.canRead() + fileToRead.isHidden());
-            return new Movie();
-        }
-
-        Log.d(TAG, fileToRead.toString());
         try {
 
             ArrayList<String[]> values = StringUtils.openFile(fileToRead);
             Log.d(TAG, values.toString());
-            currentMovie = new Movie(Integer.parseInt(values.get(0)[1]), values.get(0)[1], values.get(0)[1], values.get(0)[1]);
+            currentMovie = new Movie(Integer.parseInt(values.get(0)[1]), values.get(1)[1], values.get(2)[1], values.get(3)[1]);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return new Movie();
@@ -64,7 +58,7 @@ public class StorageUtils {
 
         ArrayList<String[]> values = StringUtils.openFile(inputStream);
         Log.d(TAG, values.toString());
-        currentMovie = new Movie(Integer.parseInt(values.get(0)[1]), values.get(0)[1], values.get(0)[1], values.get(0)[1]);
+        currentMovie = new Movie(Integer.parseInt(values.get(0)[1]), values.get(1)[1], values.get(2)[1], values.get(3)[1]);
         return currentMovie;
     }
 

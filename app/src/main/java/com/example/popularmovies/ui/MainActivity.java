@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         findViews();
 
         Movie testMovie = StorageUtils.getMovieFromStorage();
-        Log.d("MainActivity:TestMovie", testMovie.toString());
+        Log.d(TAG, testMovie.toString());
         mLayoutManager = new GridLayoutManager(this, numberOfColumns());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
