@@ -61,15 +61,10 @@ public class StorageUtils {
     private static Movie movieTestFallback() {
         InputStream inputStream = BaseApp.getAppContext().getResources().openRawResource(R.raw.godzilla_vs_kong);
         Movie currentMovie;
-        try {
 
-            ArrayList<String[]> values = StringUtils.openFile(inputStream);
-            Log.d(TAG, values.toString());
-            currentMovie = new Movie(Integer.parseInt(values.get(0)[1]), values.get(0)[1], values.get(0)[1], values.get(0)[1]);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return new Movie();
-        }
+        ArrayList<String[]> values = StringUtils.openFile(inputStream);
+        Log.d(TAG, values.toString());
+        currentMovie = new Movie(Integer.parseInt(values.get(0)[1]), values.get(0)[1], values.get(0)[1], values.get(0)[1]);
         return currentMovie;
     }
 
