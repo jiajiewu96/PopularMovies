@@ -45,4 +45,24 @@ public class StringUtils {
         }
         return values;
     }
+
+    //Fallback for testing
+    public static ArrayList<String[]> openFile(InputStream file) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(file));
+        String readLine = null;
+        ArrayList<String[]> values = new ArrayList<>();
+        try {
+            // While the BufferedReader readLine is not null
+            while ((readLine = br.readLine()) != null) {
+                values.add(getValue(readLine));
+            }
+
+            // Close the InputStream and BufferedReader
+            br.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return values;
+    }
 }
