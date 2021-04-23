@@ -3,6 +3,8 @@ package com.example.popularmovies.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -25,7 +27,7 @@ public class Movie implements Parcelable {
     private String rawPosterPath;
 
     @SerializedName("vote_average")
-    private float voteAverage;
+    private float voteAverage = Consts.DEFAULT_VOTE_AVG;
 
     private String overview;
 
@@ -36,8 +38,15 @@ public class Movie implements Parcelable {
     public Movie() {
 
     }
+    @Ignore
+    public Movie(int id, String title, String overview, String releaseDate){
+        this.id = id;
+        this.title = title;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+    }
 
-    public Movie(int id, String title, String releaseDate, String rawPosterPath, float voteAverage, String overview){
+    public Movie(int id, String title, String releaseDate, @Nullable String rawPosterPath, float voteAverage, String overview){
         this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
@@ -87,6 +96,9 @@ public class Movie implements Parcelable {
     }
     @Ignore
     public String getPosterPath() {
+        if(rawPosterPath == null){
+            return null;
+        }
         return buildImageUrlString(rawPosterPath);
     }
 
@@ -130,5 +142,13 @@ public class Movie implements Parcelable {
                 imagePath;
     }
 
-
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", overview='" + overview + '\'' +
+                '}';
+    }
 }

@@ -181,7 +181,12 @@ public class MovieDetailActivity extends AppCompatActivity implements TrailerAda
         setTitle(mMovie.getTitle());
         mTitleTextView.setText(mMovie.getTitle());
         mReleaseDateTextView.setText(setDate(mMovie.getReleaseDate()));
-        mVoteAverageTextView.setText(String.format("%s/10", String.valueOf(mMovie.getVoteAverage())));
+        if(mMovie.getVoteAverage() == Consts.DEFAULT_VOTE_AVG){
+            mVoteAverageTextView.setText("N/A");
+        }
+        else {
+            mVoteAverageTextView.setText(String.format("%s/10", mMovie.getVoteAverage()));
+        }
         mOverviewTextView.setText(mMovie.getOverview());
 
         Picasso.get().load(mMovie.getPosterPath())

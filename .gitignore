@@ -12,3 +12,4 @@
 /captures
 .externalNativeBuild
 gradle.properties
+/app/src/main/res/raw/godzilla_vs_kong.txt

@@ -28,6 +28,8 @@ import com.example.popularmovies.database.MovieRepository;
 import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
+import com.example.popularmovies.utils.StorageUtils;
+import com.example.popularmovies.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 
         findViews();
 
+        Movie testMovie = StorageUtils.getMovieFromStorage();
+        Log.d("MainActivity:TestMovie", testMovie.toString());
         mLayoutManager = new GridLayoutManager(this, numberOfColumns());
         mRecyclerView.setLayoutManager(mLayoutManager);
 

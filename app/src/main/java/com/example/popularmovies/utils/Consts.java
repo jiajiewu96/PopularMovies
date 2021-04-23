@@ -23,4 +23,6 @@ public class Consts {
     public static final String BASE_IMAGE_URL =
             "https://image.tmdb.org/t/p/";
     public static final String IMAGE_SIZE = "w185";
+
+    public static final float DEFAULT_VOTE_AVG = Float.MIN_VALUE;
 }
