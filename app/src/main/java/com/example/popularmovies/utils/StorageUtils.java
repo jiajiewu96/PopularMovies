@@ -1,23 +1,17 @@
 package com.example.popularmovies.utils;
 
-import android.media.audiofx.BassBoost;
 import android.os.Environment;
 import android.util.Log;
 
-import androidx.core.content.ContextCompat;
 
 import com.example.popularmovies.BaseApp;
 import com.example.popularmovies.R;
 import com.example.popularmovies.model.Movie;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class StorageUtils {
 
@@ -25,8 +19,13 @@ public class StorageUtils {
 
     public static Movie getMovieFromStorage() {
         Movie currentMovie = null;
-        File fileToRead;
-        File downloadDir = BaseApp.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        File fileToRead, downloadDir;
+
+        downloadDir = BaseApp.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        if(!downloadDir.isDirectory()){
+            Log.d(TAG, "not a directory");
+            return movieTestFallback();
+        }
         if (isExternalStorageWritable() && isExternalStorageReadable()) {
             fileToRead = new File(downloadDir, "godzilla_vs_kong.txt");
             if (fileToRead == null || !fileToRead.mkdirs()) {
@@ -49,7 +48,6 @@ public class StorageUtils {
         }
         return currentMovie;
     }
-
 
     private static Movie movieTestFallback() {
         InputStream inputStream = BaseApp.getAppContext().getResources().openRawResource(R.raw.godzilla_vs_kong);
