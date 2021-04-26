@@ -168,23 +168,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     private void loadMoviesFromApi() {
-        Constraints constraints = new Constraints.Builder()
-                .setRequiresCharging(true)
-                .build();
-
-        WorkRequest loadMovieWorkRequest =
-                new OneTimeWorkRequest.Builder(APIWork.class)
-                    .setInputData(
-                            new Data.Builder()
-                                .putString(Consts.WORK_PARAM_KEY, mSortString)
-                                .build())
-                    .setConstraints(constraints)
-                    .addTag(Consts.MOVIE_WORK_TAG)
-                    .build();
-
-        WorkManager
-            .getInstance(this)
-            .enqueue(loadMovieWorkRequest);
+        loadMoviesFromWorkManager();
 //        showLoading();
 //        Application application = getApplication();
 //        final MovieRepository movieRepository = ((BaseApp) application).getRepository();
@@ -213,6 +197,26 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
 //                closeOnError(t.toString());
 //            }
 //        });
+    }
+
+    private void loadMoviesFromWorkManager() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresCharging(true)
+                .build();
+
+        WorkRequest loadMovieWorkRequest =
+                new OneTimeWorkRequest.Builder(APIWork.class)
+                    .setInputData(
+                            new Data.Builder()
+                                .putString(Consts.WORK_PARAM_KEY, mSortString)
+                                .build())
+                    .setConstraints(constraints)
+                    .addTag(Consts.MOVIE_WORK_TAG)
+                    .build();
+
+        WorkManager
+            .getInstance(this)
+            .enqueue(loadMovieWorkRequest);
     }
 
     private void showLoading() {
