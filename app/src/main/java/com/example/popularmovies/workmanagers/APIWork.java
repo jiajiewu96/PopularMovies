@@ -1,6 +1,5 @@
 package com.example.popularmovies.workmanagers;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -39,7 +38,7 @@ public class APIWork extends Worker {
         final MovieRepository movieRepository = ((BaseApp) application).getRepository();
         Log.d(TAG, movieRepository.toString());
         Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(getInputData().getString(Consts.WORK_PARAM_KEY));
-
+        movieRepository.deleteAll();
         responseCall.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -51,7 +50,9 @@ public class APIWork extends Worker {
                 ArrayList<Movie> movies;
                 if (response.body() != null) {
                     movies = (ArrayList<Movie>) response.body().getMovies();
-
+                    for(Movie movie: movies){
+                        movieRepository.addFavoriteToFavoriteDatabase(movie);
+                    }
                     Log.d(TAG, "Movies Successfully retrieved");
 
                 } else {
@@ -61,7 +62,6 @@ public class APIWork extends Worker {
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
-                Result.failure();
                 Log.d(TAG, "Unsuccessful Call");
             }
         });

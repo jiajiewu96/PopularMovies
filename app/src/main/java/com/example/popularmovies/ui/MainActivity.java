@@ -12,6 +12,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 import com.example.popularmovies.utils.StorageUtils;
+import com.example.popularmovies.workmanagers.APIService;
 import com.example.popularmovies.workmanagers.APIWork;
 
 import java.util.ArrayList;
@@ -147,6 +149,11 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     private void findViews() {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_posters);
@@ -168,35 +175,51 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     private void loadMoviesFromApi() {
-        loadMoviesFromWorkManager();
-//        showLoading();
-//        Application application = getApplication();
-//        final MovieRepository movieRepository = ((BaseApp) application).getRepository();
-//        Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
-//
-//        responseCall.enqueue(new Callback<MovieResponse>() {
-//            @Override
-//            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-//                if (!response.isSuccessful()) {
-//                    closeOnError(response.message());
-//                    return;
-//                }
-//
-//                ArrayList<Movie> movies;
-//                if (response.body() != null) {
-//                    movies = (ArrayList<Movie>) response.body().getMovies();
-//                    mMoviePosterAdapter.setMoviePosterStrings(movies);
-//                    showMoviePosters();
-//                } else {
-//                    closeOnError(getString(R.string.io_error));
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MovieResponse> call, Throwable t) {
-//                closeOnError(t.toString());
-//            }
-//        });
+        //loadMoviesFromWorkManager();
+        //loadMoviesNonBackground();
+        loadMoviesForegroundService();
+    }
+
+    @SuppressLint("NewApi")
+    private void loadMoviesForegroundService() {
+        Intent foreGroundServiceIntent = new Intent(this, APIService.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Consts.MOVIE_EXTRA_KEY, mSortString);
+        foreGroundServiceIntent.putExtra(Consts.MOVIE_SERVICE_TAG, bundle);
+
+        startForegroundService(foreGroundServiceIntent);
+    }
+
+    private void loadMoviesNonBackground() {
+        showLoading();
+        Application application = getApplication();
+        final MovieRepository movieRepository = ((BaseApp) application).getRepository();
+        Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
+
+        responseCall.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (!response.isSuccessful()) {
+                    closeOnError(response.message());
+                    return;
+                }
+
+                ArrayList<Movie> movies;
+                if (response.body() != null) {
+                    movies = (ArrayList<Movie>) response.body().getMovies();
+                    mMoviePosterAdapter.setMoviePosterStrings(movies);
+                    showMoviePosters();
+                } else {
+                    closeOnError(getString(R.string.io_error));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                closeOnError(t.toString());
+
+            }
+        });
     }
 
     private void loadMoviesFromWorkManager() {

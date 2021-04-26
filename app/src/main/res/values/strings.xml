@@ -20,6 +20,7 @@
     <string name="menu_title_popular">Popular</string>
     <string name="menu_title_toprated">Top Rated</string>
     <string name="manue_title_favorites">Favorites</string>
+    <string name="loading_movies">Downloading Movies</string>
     <string-array name="sort_array">
         <item>Popular</item>
         <item>Top Rated</item>

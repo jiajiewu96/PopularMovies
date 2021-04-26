@@ -28,4 +28,6 @@ public class Consts {
     public static final float DEFAULT_VOTE_AVG = Float.MIN_VALUE;
 
     public static final String MOVIE_WORK_TAG = "movie_work";
+    public static final String MOVIE_SERVICE_TAG = "movie_service";
+    public static final String MOVIE_SERVICE_NAME = "download_service";
 }
