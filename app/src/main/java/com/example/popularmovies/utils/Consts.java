@@ -13,6 +13,7 @@ public class Consts {
     public static final String YOUTUBE_MEDIUM_QUALITY =
             "/default.jpg";
 
+    public static final String WORK_PARAM_KEY = "PARAM_KEY";
     public static final String POPULAR_PARAM = "popular";
     public static final String TOP_RATED_PARAM = "top_rated";
     public static final String MOVIE_EXTRA_KEY = "current_movie";
@@ -25,4 +26,6 @@ public class Consts {
     public static final String IMAGE_SIZE = "w185";
 
     public static final float DEFAULT_VOTE_AVG = Float.MIN_VALUE;
+
+    public static final String MOVIE_WORK_TAG = "movie_work";
 }

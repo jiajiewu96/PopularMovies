@@ -6,6 +6,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import android.app.Application;
 import android.content.Intent;
@@ -30,6 +35,7 @@ import com.example.popularmovies.utils.Consts;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.MovieResponse;
 import com.example.popularmovies.utils.StorageUtils;
+import com.example.popularmovies.workmanagers.APIWork;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,34 +168,51 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     }
 
     private void loadMoviesFromApi() {
-        showLoading();
-        Application application = getApplication();
-        final MovieRepository movieRepository = ((BaseApp) application).getRepository();
-        Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresCharging(true)
+                .build();
 
-        responseCall.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                if (!response.isSuccessful()) {
-                    closeOnError(response.message());
-                    return;
-                }
+        WorkRequest loadMovieWorkRequest =
+                new OneTimeWorkRequest.Builder(APIWork.class)
+                    .setInputData(
+                            new Data.Builder()
+                                .putString(Consts.WORK_PARAM_KEY, mSortString)
+                                .build())
+                    .setConstraints(constraints)
+                    .addTag(Consts.MOVIE_WORK_TAG)
+                    .build();
 
-                ArrayList<Movie> movies;
-                if (response.body() != null) {
-                    movies = (ArrayList<Movie>) response.body().getMovies();
-                    mMoviePosterAdapter.setMoviePosterStrings(movies);
-                    showMoviePosters();
-                } else {
-                    closeOnError(getString(R.string.io_error));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                closeOnError(t.toString());
-            }
-        });
+        WorkManager
+            .getInstance(this)
+            .enqueue(loadMovieWorkRequest);
+//        showLoading();
+//        Application application = getApplication();
+//        final MovieRepository movieRepository = ((BaseApp) application).getRepository();
+//        Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
+//
+//        responseCall.enqueue(new Callback<MovieResponse>() {
+//            @Override
+//            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+//                if (!response.isSuccessful()) {
+//                    closeOnError(response.message());
+//                    return;
+//                }
+//
+//                ArrayList<Movie> movies;
+//                if (response.body() != null) {
+//                    movies = (ArrayList<Movie>) response.body().getMovies();
+//                    mMoviePosterAdapter.setMoviePosterStrings(movies);
+//                    showMoviePosters();
+//                } else {
+//                    closeOnError(getString(R.string.io_error));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MovieResponse> call, Throwable t) {
+//                closeOnError(t.toString());
+//            }
+//        });
     }
 
     private void showLoading() {
