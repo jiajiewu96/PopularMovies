@@ -60,6 +60,12 @@ public class APIService extends Service {
             final MovieRepository movieRepository = ((BaseApp) application).getRepository();
             Call<MovieResponse> responseCall = movieRepository.getMoviesFromAPI(mSortString);
 
+            if(Looper.myLooper() == Looper.getMainLooper()){
+                Log.d(TAG, "ServiceHandler is on main thread");
+            } else {
+                Log.d(TAG, "ServiceHandler is on alternative thread");
+            }
+
             responseCall.enqueue(new retrofit2.Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -68,13 +74,20 @@ public class APIService extends Service {
                         stopSelf();
                         return;
                     }
-
+                    if(Looper.myLooper() == Looper.getMainLooper()){
+                        Log.d(TAG, "Retrofit is on main thread");
+                    } else {
+                        Log.d(TAG, "Retrofit is on alternative thread");
+                    }
                     ArrayList<Movie> movies;
                     if (response.body() != null) {
-                        //movieRepository.deleteAll();
+                        movieRepository.deleteAll();
                         movies = (ArrayList<Movie>) response.body().getMovies();
-                        //movieRepository.addFavoriteToFavoriteDatabase(movie);
+                        for(Movie movie: movies){
+                            movieRepository.addFavoriteToFavoriteDatabase(movie);
+                        }
                         Log.d(TAG, "SUCCESS");
+                        stopSelf();
                     } else {
                         Log.d(TAG, "Failure: Empty Body");
                     }
@@ -105,7 +118,7 @@ public class APIService extends Service {
         createNotificationChannel();
         @SuppressLint({"NewApi", "LocalSuppress"}) //TESTING PURPOSES ONLY
                 Notification notification = new Notification.Builder(this, CHANNEL_ID)
-                .setContentTitle("Foreground Service")
+                .setContentTitle("PopularMovies Downloading")
                 .setContentText(getText(R.string.loading_movies))
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)

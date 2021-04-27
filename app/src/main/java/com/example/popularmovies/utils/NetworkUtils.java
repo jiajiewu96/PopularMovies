@@ -6,6 +6,8 @@ import com.example.popularmovies.model.TrailerResponse;
 import com.example.popularmovies.retrofitInterfaces.MovieDBService;
 import com.example.popularmovies.model.MovieResponse;
 
+import java.util.concurrent.Executors;
+
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -18,6 +20,7 @@ public class NetworkUtils {
     private static Retrofit buildRetrofitUrl() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_MOVIE_URL)
+                .callbackExecutor(Executors.newSingleThreadExecutor())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit;
